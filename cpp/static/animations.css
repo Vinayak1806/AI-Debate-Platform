@@ -1,0 +1,82 @@
+/* Scroll animations for modern AI UI */
+.animate-hero, .animate-card, .animate-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: var(--transition);
+}
+
+.animate-hero.animate-fade-slide {
+  animation: fadeInUpHero 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes fadeInUpHero {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-card.animate-fade-slide {
+  animation: fadeInUpCard 0.8s var(--delay, 0s) ease-out;
+}
+
+@keyframes fadeInUpCard {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Typing indicator chat */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 1rem 1.25rem;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--accent-blue);
+}
+
+.typing-dots {
+  display: flex;
+  gap: 0.3em;
+}
+
+.typing-dots span {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+    opacity: 0.5;
+  } 
+  40% { 
+    transform: scale(1);
+    opacity: 1; 
+  }
+}
+
+.message-slide {
+  opacity: 0;
+  transform: translateX(20px);
+  animation: messageSlide 0.4s ease-out forwards;
+}
+
+.user-message .message-slide { transform: translateX(-20px); }
+
+@keyframes messageSlide {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

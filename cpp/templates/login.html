@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Debate and Dialogue</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-body auth-page">
+
+    <div class="main-content">
+        <div class="container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to continue your debate journey</p>
+                </div>
+
+                <form method="POST" class="auth-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required placeholder="Enter your username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    </div>
+
+                    <button type="submit" class="auth-btn">Sign In</button>
+                </form>
+
+                <div class="auth-links">
+                    <p>Don't have an account? <a href="{{ url_for('signup') }}">Create one here</a></p>
+                </div>
+            </div>
+
+            <div class="auth-features">
+                <div class="feature-highlight">
+                    <span class="highlight-icon">🎯</span>
+                    <span>Master Communication Skills</span>
+                </div>
+                <div class="feature-highlight">
+                    <span class="highlight-icon">🤖</span>
+                    <span>AI-Powered Debates</span>
+                </div>
+                <div class="feature-highlight">
+                    <span class="highlight-icon">📈</span>
+                    <span>Track Your Progress</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

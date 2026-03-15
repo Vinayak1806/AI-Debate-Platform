@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topics - AI Debate and Dialogue</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+    <nav class="navbar">
+        <h2>AI Debate & Dialogue</h2>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('why_platform') }}">Why This Platform</a></li>
+            <li><a href="{{ url_for('how_it_works') }}">How It Works</a></li>
+            <li><a href="{{ url_for('features') }}">Features</a></li>
+            <li><a href="{{ url_for('topics') }}" class="active">Debate Topics</a></li>
+            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        </ul>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <h1>Debate Topics</h1>
+
+            <div class="search-section">
+                <div class="search-input-wrapper">
+                    <!-- Search Icon (Decorative) -->
+                    <span class="material-icons search-icon">search</span>
+                    
+                    <input type="text" id="topic-search" placeholder="Search topics..." class="search-input">
+                    
+                    <button type="button" id="mic-btn" class="mic-btn" title="Voice search">
+                        <span class="material-icons">mic</span>
+                    </button>
+                    
+                    <button class="search-btn">Search</button>
+                </div>
+            </div>
+
+<div class="topics-scroll-wrapper">
+                <div class="categories-container" id="topics-list">
+                    <!-- Categories dynamically loaded by topics.js -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <style>
+        .search-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 5px 5px 5px 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 600px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .search-input-wrapper:focus-within {
+            box-shadow: 0 4px 20px rgba(165, 94, 234, 0.15);
+            border-color: rgba(165, 94, 234, 0.3);
+        }
+
+        .search-icon {
+            color: #94a3b8;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            color: #334155;
+            outline: none;
+            padding: 10px 0;
+            min-width: 0;
+        }
+
+        .search-input::placeholder {
+            color: #cbd5e1;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 24px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(165, 94, 234, 0.3);
+        }
+
+        .topics-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .topic-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .topic-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+.topic-item h3 {
+            color: #4CAF50;
+            margin: 0 0 10px 0;
+        }
+
+        .debate-btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .debate-btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+    </style>
+
+    <script src="{{ url_for('static', filename='topics-data.js') }}"></script>
+    <script src="{{ url_for('static', filename='topics.js') }}"></script>
+    <script src="{{ url_for('static', filename='voice-search.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new VoiceSearch('topic-search');
+            // Search integration with hierarchical structure (handled in topics.js filterTopics)
+        });
+    </script>
+</body>
+</html>
