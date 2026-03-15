@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debate: {{ topic }} - AI Debate & Dialogue</title>
+    <title>Debate: {{ topic }} - AI Debate &amp; Dialogue</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav class="navbar">
-        <h2>AI Debate & Dialogue</h2>
+        <h2>AI Debate &amp; Dialogue</h2>
         <ul class="nav-links">
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('why_platform') }}">Why This Platform</a></li>
             <li><a href="{{ url_for('how_it_works') }}">How It Works</a></li>
             <li><a href="{{ url_for('features') }}">Features</a></li>
-            <li><a href="{{ url_for('topics') }}">Debate Topics</a></li>
+            <li><a href="{{ url_for('topics') }}" class="active">Debate Topics</a></li>
             <li><a href="{{ url_for('profile') }}">Profile</a></li>
         </ul>
         <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
@@ -22,11 +22,8 @@
 
     <div class="main-content">
         <div class="container">
-            <!-- 
-                DEBATE HEADER
-                Shows the current topic and a badge indicating if this is an active or past debate.
-                Jinja templating (`{% if ... %}`) controls what text is shown based on variables passed from app.py.
-            -->
+
+            <!-- DEBATE HEADER: shows the topic name and a status badge -->
             <div class="debate-header">
                 <h1>{% if view_past %}Previous Debate: {% endif %}{{ topic }}</h1>
                 <div class="debate-info">
@@ -40,11 +37,7 @@
             </div>
 
             {% if view_past and conversation %}
-            <!-- 
-                PAST DEBATE VIEW
-                This section only renders if the user is viewing a historical debate.
-                It loops through the `conversation` list passed from the backend and renders each message.
-            -->
+            <!-- PAST DEBATE VIEW: loops over saved messages from the backend -->
             <div class="past-debate-container">
                 <div class="conversation-history">
                     {% for msg in conversation %}
@@ -62,491 +55,346 @@
                 </div>
                 <div class="past-debate-actions">
                     <button id="continue-debate-btn" class="continue-debate-btn">Continue Debate</button>
-                    <a href="{{ url_for('debate', topic=topic|replace(' ', '_')) }}" class="new-debate-btn">Start Fresh Debate</a>
+                    <a href="{{ url_for('debate', topic=topic|replace(' ', '_')) }}" class="new-debate-btn-link">Start Fresh Debate</a>
                     <a href="{{ url_for('home') }}" class="back-btn">Back to Home</a>
                 </div>
             </div>
             {% else %}
-            <!-- 
-                ACTIVE DEBATE VIEW
-                This section renders when starting a new debate.
-                It begins by asking the user to choose their stance (For or Against).
-            -->
+            <!-- ACTIVE DEBATE VIEW -->
+
+            <!-- Step 1: User chooses FOR or AGAINST -->
             <div class="position-selection" id="position-selection">
-                <h2>Choose Your Position</h2>
+                <h2>Choose Your Position on "{{ topic }}"</h2>
+                <p>Pick a side and defend it against the AI opponent.</p>
                 <div class="position-options">
-                    <button class="position-btn" data-position="for">Argue FOR</button>
-                    <button class="position-btn" data-position="against">Argue AGAINST</button>
+                    <button class="position-btn" data-position="for">👍 Argue FOR</button>
+                    <button class="position-btn" data-position="against">👎 Argue AGAINST</button>
                 </div>
             </div>
 
-            <!-- 
-                CHAT INTERFACE
-                Initially hidden (`display: none`). It becomes visible via JavaScript after the user chooses a position.
-            -->
+            <!-- Step 2: Chat interface (hidden until position chosen) -->
             <div class="chat-container" id="chat-container" style="display: none;">
-<div class="chat-messages" id="chat-messages">
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Welcome message pre-loaded -->
                     <div class="message ai-message message-slide">
                         <div class="message-avatar">🤖</div>
                         <div class="message-content">
                             <div class="message-header">AI Opponent</div>
-                            <div class="message-text">Welcome to the debate! I'm ready to discuss "{{ topic }}". Please state your position and begin with your opening argument.</div>
+                            <div class="message-text">Welcome! I am ready to debate "{{ topic }}". Please state your position and present your opening argument.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Typing indicator template -->
+                <!-- Typing indicator (shown while AI "thinks") -->
                 <div class="message ai-message typing-indicator" id="typing-indicator" style="display: none;">
                     <div class="message-avatar">🤖</div>
                     <div class="message-content">
                         <div class="message-header">AI Opponent <span class="typing-status">typing...</span></div>
                         <div class="typing-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                            <span></span><span></span><span></span>
                         </div>
                     </div>
                 </div>
 
+                <!-- Message input area -->
                 <div class="chat-input-area">
                     <textarea id="message-input" placeholder="Type your argument here..." rows="3"></textarea>
                     <button id="send-btn" class="send-btn">Send Argument</button>
                 </div>
 
+                <!-- Debate control buttons -->
                 <div class="debate-controls">
                     <button id="end-debate-btn" class="end-debate-btn">End Debate</button>
                     <button id="new-debate-btn" class="new-debate-btn">New Debate</button>
                 </div>
             </div>
+            {% endif %}
+
         </div>
     </div>
 
     <style>
-        .debate-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .debate-header { text-align: center; margin-bottom: 30px; }
+        .debate-info { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+        .topic-badge { background-color: #4CAF50; color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+        .status { background-color: #2196F3; color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+        .status.past { background-color: #9E9E9E; }
 
-        .debate-info {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-        }
+        .position-selection { background: #f9f9f9; padding: 24px 24px; border-radius: 12px; text-align: center; margin-bottom: 20px; }
+        .position-selection h2 { color: #333; margin-bottom: 10px; }
+        .position-selection p { color: #666; margin-bottom: 25px; }
+        .position-options { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .position-btn { padding: 15px 35px; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+        .position-btn[data-position="for"] { background-color: #4CAF50; color: white; }
+        .position-btn[data-position="for"]:hover { background-color: #45a049; transform: scale(1.05); }
+        .position-btn[data-position="against"] { background-color: #f44336; color: white; }
+        .position-btn[data-position="against"]:hover { background-color: #d32f2f; transform: scale(1.05); }
 
-        .topic-badge {
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-        }
+        .chat-container { background: #f9f9f9; border-radius: 8px; padding: 16px; height: calc(100vh - 260px); min-height: 360px; max-height: 560px; display: flex; flex-direction: column; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: white; border-radius: 8px; margin-bottom: 12px; border: 1px solid #e0e0e0; }
+        .message { display: flex; margin-bottom: 20px; align-items: flex-start; }
+        .message-slide { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .message-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px; flex-shrink: 0; }
+        .user-message .message-avatar { background-color: #4CAF50; color: white; }
+        .ai-message .message-avatar { background-color: #2196F3; color: white; }
+        .message-content { flex: 1; }
+        .message-header { font-weight: bold; margin-bottom: 5px; color: #333; }
+        .message-text { background: #f5f5f5; padding: 12px 15px; border-radius: 8px; line-height: 1.6; }
+        .user-message .message-text { background: #e8f5e8; }
+        .message-time { font-weight: normal; font-size: 0.8rem; color: #888; margin-left: 10px; }
 
-        .status {
-            background-color: #2196F3;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-        }
+        .typing-indicator .typing-dots { display: flex; gap: 5px; padding: 8px; }
+        .typing-dots span { width: 8px; height: 8px; background: #aaa; border-radius: 50%; animation: bounce 1.2s infinite; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0.6); } 40% { transform: scale(1.0); } }
+        .typing-status { font-weight: normal; color: #888; font-size: 0.85rem; }
 
-        .position-selection {
-            background-color: #f9f9f9;
-            padding: 30px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .chat-input-area { display: flex; gap: 10px; margin-bottom: 15px; }
+        #message-input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 16px; resize: vertical; outline: none; transition: border-color 0.3s; }
+        #message-input:focus { border-color: #4CAF50; }
+        .send-btn { padding: 12px 25px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s; white-space: nowrap; }
+        .send-btn:hover { background: #45a049; }
+        .send-btn:disabled { background: #aaa; cursor: not-allowed; }
 
-        .position-options {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
+        .debate-controls { display: flex; justify-content: center; gap: 15px; }
+        .end-debate-btn, .new-debate-btn { padding: 10px 22px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        .end-debate-btn { background: #f44336; color: white; }
+        .end-debate-btn:hover { background: #d32f2f; }
+        .end-debate-btn:disabled { background: #aaa; cursor: not-allowed; }
+        .new-debate-btn { background: #2196F3; color: white; }
+        .new-debate-btn:hover { background: #1976d2; }
 
-        .position-btn {
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .position-btn[data-position="for"] {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .position-btn[data-position="for"]:hover {
-            background-color: #45a049;
-            transform: scale(1.05);
-        }
-
-        .position-btn[data-position="against"] {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .position-btn[data-position="against"]:hover {
-            background-color: #d32f2f;
-            transform: scale(1.05);
-        }
-
-        .chat-container {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 20px;
-            height: 600px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: white;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .message {
-            display: flex;
-            margin-bottom: 20px;
-            align-items: flex-start;
-        }
-
-        .message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-
-        .user-message .message-avatar {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .ai-message .message-avatar {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .message-content {
-            flex: 1;
-        }
-
-        .message-header {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .message-text {
-            background-color: #f5f5f5;
-            padding: 12px 15px;
-            border-radius: 8px;
-            line-height: 1.5;
-        }
-
-        .user-message .message-text {
-            background-color: #e8f5e8;
-            text-align: right;
-        }
-
-        .chat-input-area {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        #message-input {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 16px;
-            resize: vertical;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        #message-input:focus {
-            border-color: #4CAF50;
-        }
-
-        .send-btn {
-            padding: 12px 25px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .send-btn:hover {
-            background-color: #45a049;
-        }
-
-        .debate-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .end-debate-btn, .new-debate-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .end-debate-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .end-debate-btn:hover {
-            background-color: #d32f2f;
-        }
-
-        .new-debate-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .new-debate-btn:hover {
-            background-color: #1976d2;
-        }
-
-        /* Past Debate View Styles */
-        .past-debate-container {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .conversation-history {
-            max-height: 500px;
-            overflow-y: auto;
-            padding: 15px;
-            background-color: white;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-            margin-bottom: 20px;
-        }
-
-        .message-time {
-            font-weight: normal;
-            font-size: 0.8rem;
-            color: #888;
-            margin-left: 10px;
-        }
-
-        .past-debate-actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .back-btn {
-            padding: 10px 20px;
-            background-color: #666;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .back-btn:hover {
-            background-color: #444;
-        }
-
-        .continue-debate-btn {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .continue-debate-btn:hover {
-            background-color: #45a049;
-        }
-
-        .status.past {
-            background-color: #9E9E9E;
-        }
+        .past-debate-container { background: #f9f9f9; border-radius: 8px; padding: 20px; }
+        .conversation-history { max-height: 520px; overflow-y: auto; padding: 15px; background: white; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 20px; }
+        .past-debate-actions { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .back-btn, .new-debate-btn-link { padding: 10px 22px; border-radius: 6px; font-weight: bold; text-decoration: none; display: inline-block; transition: background 0.3s; }
+        .back-btn { background: #666; color: white; }
+        .back-btn:hover { background: #444; }
+        .new-debate-btn-link { background: #2196F3; color: white; }
+        .new-debate-btn-link:hover { background: #1976d2; }
+        .continue-debate-btn { padding: 10px 22px; background: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        .continue-debate-btn:hover { background: #45a049; }
     </style>
-
-            {% endif %}
-        </div>
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const positionSelection = document.getElementById('position-selection');
-            const chatContainer = document.getElementById('chat-container');
-            const positionBtns = document.querySelectorAll('.position-btn');
-            const messageInput = document.getElementById('message-input');
-            const sendBtn = document.getElementById('send-btn');
-            const chatMessages = document.getElementById('chat-messages');
-            const endDebateBtn = document.getElementById('end-debate-btn');
-            const newDebateBtn = document.getElementById('new-debate-btn');
-            const continueDebateBtn = document.getElementById('continue-debate-btn');
 
-            let userPosition = null;
+            // Grab DOM elements — guarded with 'if' checks because some elements only
+            // exist in the active-debate view, not in the past-debate view.
+            var positionSelection  = document.getElementById('position-selection');
+            var chatContainer      = document.getElementById('chat-container');
+            var positionBtns       = document.querySelectorAll('.position-btn');
+            var messageInput       = document.getElementById('message-input');
+            var sendBtn            = document.getElementById('send-btn');
+            var chatMessages       = document.getElementById('chat-messages');
+            var endDebateBtn       = document.getElementById('end-debate-btn');
+            var newDebateBtn       = document.getElementById('new-debate-btn');
+            var continueDebateBtn  = document.getElementById('continue-debate-btn');
 
-            // If continue debate button exists, set up the handler
-            if (continueDebateBtn) {
-                continueDebateBtn.addEventListener('click', function() {
-                    const pastContainer = document.querySelector('.past-debate-container');
-                    if (pastContainer) {
-                        pastContainer.style.display = 'none';
-                    }
-                    // Show chat container directly (skip position selection since debate already has a position)
-                    chatContainer.style.display = 'flex';
-                    
-                    // Set a default position
-                    userPosition = 'for';
-                    
-                    // Add a welcome back message
-                    addMessage('ai', 'AI Opponent', 'Welcome back! Let\'s continue our debate on "{{ topic }}". What would you like to say next?');
-                });
-            }
+            // Topic name injected by Flask/Jinja at render time — safe as a plain string
+            var topicName = '{{ topic }}';
+            var topicKey  = topicName.toLowerCase();
+            var userPosition = null;
 
-            // Mock AI responses based on topic
-            const aiResponses = {
-                'artificial intelligence ethics': [
-                    "While AI can bring many benefits, we must consider the ethical implications of creating systems that can make autonomous decisions affecting human lives.",
-                    "The key concern is accountability - who is responsible when an AI system makes a harmful decision?",
-                    "Privacy is another major issue. AI systems often require vast amounts of personal data to function effectively."
+            // ------------------------------------------------------------------
+            // AI RESPONSE BANK — keyed by topic keyword (checked with indexOf)
+            // ------------------------------------------------------------------
+            var aiResponses = {
+                'artificial intelligence': [
+                    'While AI brings many benefits, we must consider the ethical implications of autonomous systems making decisions that affect human lives.',
+                    'Accountability is the key concern — who is responsible when an AI system makes a harmful decision?',
+                    'Privacy is a major issue. AI requires vast personal data, creating systemic surveillance risks.',
+                    'Algorithmic bias is serious — models trained on historical data perpetuate and amplify societal inequalities.',
+                    'We need international AI governance frameworks, similar to how nuclear technology requires global regulation.'
                 ],
-                'climate change solutions': [
-                    "Renewable energy sources like solar and wind power are essential, but we need to address the intermittency issues they present.",
-                    "Carbon pricing mechanisms could provide economic incentives for reducing emissions, but implementation varies by country.",
-                    "Individual actions are important, but systemic changes in industry and agriculture are crucial for meaningful impact."
+                'climate': [
+                    'Renewable energy is essential, but intermittency requires solving grid-scale storage first.',
+                    'Carbon pricing incentivizes reductions, but poor design could disproportionately harm low-income communities.',
+                    'Individual actions matter, but systemic industrial and agricultural changes have far greater overall leverage.',
+                    'Geoengineering is risky — we do not fully understand cascading effects on global weather systems.',
+                    'Developing nations have the right to economic growth; industrialized countries must bear a greater share of the burden.'
                 ],
-                'education reform': [
-                    "Traditional education models were designed for industrial age needs. We need to adapt to the information age.",
-                    "Personalized learning enabled by technology could address individual student needs more effectively.",
-                    "Critical thinking and problem-solving skills should be prioritized over rote memorization."
+                'education': [
+                    'Traditional education was designed for the industrial age and needs to evolve rapidly for the information economy.',
+                    'Personalized technology-enabled learning addresses individual needs far better than one-size-fits-all curricula.',
+                    'Critical thinking should be prioritized over rote memorization — technology already handles information storage.',
+                    'Teacher quality is the single most impactful in-school factor, yet teaching remains undervalued and undercompensated.',
+                    'Standardized testing creates perverse incentives, leading schools to teach to the test rather than build real understanding.'
                 ],
                 'universal basic income': [
-                    "UBI could provide a safety net in an increasingly automated economy, but funding such a program at scale is challenging.",
-                    "There's concern that UBI might reduce work incentives, though evidence from pilot programs suggests otherwise.",
-                    "UBI could stimulate local economies by increasing consumer spending power."
+                    'UBI could provide an essential safety net as automation accelerates, though funding at scale is a genuine fiscal challenge.',
+                    'Pilot programs in Finland and Stockton showed minimal impact on employment, disproving the laziness narrative.',
+                    'UBI would stimulate local economies by increasing consumer purchasing power, especially in depressed regions.',
+                    'Targeted welfare programs are often more cost-effective than universal payments that also go to the wealthy.',
+                    'The real question is whether we can afford not to have UBI as millions of jobs are displaced by automation.'
                 ],
-                'space exploration': [
-                    "Space exploration drives technological innovation that benefits life on Earth, from medical advances to materials science.",
-                    "The cost of space programs is often criticized, but the return on investment in terms of technological spin-offs is substantial.",
-                    "Space exploration inspires future generations and expands our understanding of our place in the universe."
+                'gun': [
+                    'The Second Amendment was written for single-shot muskets — the founders could not have anticipated modern weapons.',
+                    'Nations with stricter gun regulations consistently show dramatically lower gun violence rates.',
+                    'The right to self-defense is legitimate. In rural areas, police response can take 30+ minutes.',
+                    'Universal background checks enjoy over 90 percent public support but Congress repeatedly fails to act — this is a breakdown of representation.',
+                    'Mental health investment and gun policy are complements, not alternatives — both are needed simultaneously.'
                 ],
-                'healthcare systems': [
-                    "Universal healthcare aims to ensure access for all, but different systems balance cost, quality, and access differently.",
-                    "Prevention and public health initiatives could reduce long-term healthcare costs significantly.",
-                    "Technology integration, from telemedicine to AI diagnostics, is transforming healthcare delivery."
+                'healthcare': [
+                    'Universal healthcare ensures access for all citizens, though systems need to carefully balance cost, quality, and efficiency.',
+                    'Prevention saves dramatically more than treatment — a dollar of prevention can save ten dollars of cure.',
+                    'Market competition drives pharma innovation, but patients having a heart attack cannot comparison-shop.',
+                    'Administrative overhead in multi-payer systems consumes roughly 30 percent of US healthcare spending — single-payer could eliminate most of it.',
+                    'Healthcare is a human right, not a commodity. No person should face financial ruin simply for becoming ill.'
+                ],
+                'democracy': [
+                    'Democracies are historically more stable, prosperous, and peaceful than authoritarian systems.',
+                    'Authoritarian efficiency is a myth — speed without accountability leads to unchecked, catastrophic mistakes.',
+                    'Democratic backsliding — elected leaders gradually dismantling checks and balances — is the defining threat of our era.',
+                    'A free press and free speech are error-correction mechanisms that allow societies to identify and fix mistakes.',
+                    'Economic growth does not require authoritarianism — South Korea, Taiwan, and Chile all democratized while growing.'
+                ],
+                'social media': [
+                    'Social media enabled connections and movements that would have been impossible before — its democratizing effects are real.',
+                    'Algorithmic amplification of outrage is the revenue model, not a bug — self-regulation will therefore never work.',
+                    'Measurable links between curated social feeds and teen depression and anxiety cannot be dismissed as anecdote.',
+                    'Section 230 immunity must be conditional on good-faith content moderation — platforms cannot have absolute protection.',
+                    'The surveillance advertising model — harvesting user data to sell targeted ads — is incompatible with user welfare.'
+                ],
+                'minimum wage': [
+                    'Research consistently shows moderate minimum wage increases do not cause the predicted job losses.',
+                    'No full-time worker should live in poverty. The US federal minimum has lost 40 percent of its purchasing power since the 1970s.',
+                    'Small businesses with thin margins can find a sudden large minimum wage increase genuinely existential.',
+                    'A single federal rate ignores regional cost of living differences — right for coastal cities, potentially harmful in rural areas.',
+                    'Automation of low-wage work is coming regardless of wage levels — companies always eventually pursue lower labor costs.'
+                ],
+                'space': [
+                    'Space exploration drives innovation that benefits life on Earth: GPS, medical imaging, water filtration all have space origins.',
+                    'The return on space investment through technological spin-offs is estimated to exceed the initial spending.',
+                    'Private companies have dramatically reduced launch costs, democratizing access to orbit.',
+                    'With poverty and climate change unsolved, some argue space funds should address urgent Earth-bound problems first.',
+                    'A multi-planetary species is humanity\'s best insurance against existential threats like asteroids or global pandemics.'
                 ]
             };
 
-            const topic = "{{ topic }}".toLowerCase();
-            const responses = aiResponses[topic] || [
-                "That's an interesting point. Could you elaborate on your reasoning?",
-                "I see your perspective, but have you considered the counterarguments?",
-                "Your argument raises important questions about implementation and unintended consequences."
-            ];
+            // Find best matching response set by scanning topic keywords
+            var responses = null;
+            var keys = Object.keys(aiResponses);
+            for (var i = 0; i < keys.length; i++) {
+                if (topicKey.indexOf(keys[i]) !== -1) {
+                    responses = aiResponses[keys[i]];
+                    break;
+                }
+            }
+            // Fallback for any topic not matched above
+            if (!responses) {
+                responses = [
+                    'That is an important point. Could you support it with specific evidence or real-world examples?',
+                    'I see your perspective, but consider the strongest version of the opposing argument before dismissing it.',
+                    'Your position raises important implementation questions. How would this actually work in practice?',
+                    'Correlation is not causation — what direct evidence links your premise to your conclusion?',
+                    'The opposing side would argue exactly the opposite, and with real evidence. How do you respond?',
+                    'Every policy involves trade-offs. What are the unintended consequences of what you are proposing?',
+                    'Not everyone shares those underlying values. How would you persuade someone who genuinely disagrees?'
+                ];
+            }
 
-            positionBtns.forEach(btn => {
+            // ------------------------------------------------------------------
+            // EVENT HANDLERS
+            // ------------------------------------------------------------------
+
+            // Continue Debate — only exists in past-debate view
+            if (continueDebateBtn) {
+                continueDebateBtn.addEventListener('click', function() {
+                    var pastContainer = document.querySelector('.past-debate-container');
+                    if (pastContainer) pastContainer.style.display = 'none';
+                    if (chatContainer) chatContainer.style.display = 'flex';
+                    userPosition = 'for';
+                    addMessage('ai', 'AI Opponent', 'Welcome back! Let\'s continue our debate on "' + topicName + '". Go ahead.');
+                });
+            }
+
+            // Position selection buttons (FOR / AGAINST)
+            positionBtns.forEach(function(btn) {
                 btn.addEventListener('click', function() {
                     userPosition = this.getAttribute('data-position');
-                    positionSelection.style.display = 'none';
-                    chatContainer.style.display = 'flex';
-
-                    // Add initial AI message based on position
-                    const initialMessage = userPosition === 'for'
-                        ? `I understand you're arguing FOR "${{ topic }}". I'll take the opposing position. Please present your opening argument.`
-                        : `I understand you're arguing AGAINST "${{ topic }}". I'll take the opposing position. Please present your opening argument.`;
-
-                    addMessage('ai', 'AI Opponent', initialMessage);
+                    if (positionSelection) positionSelection.style.display = 'none';
+                    if (chatContainer) chatContainer.style.display = 'flex';
+                    var stance = userPosition === 'for' ? 'FOR' : 'AGAINST';
+                    addMessage('ai', 'AI Opponent',
+                        'I understand you are arguing ' + stance + ' "' + topicName + '". ' +
+                        'I will take the opposing position. Please present your opening argument.');
                 });
             });
 
-            sendBtn.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                }
-            });
+            // Send button
+            if (sendBtn) sendBtn.addEventListener('click', sendMessage);
 
-            endDebateBtn.addEventListener('click', function() {
-                addMessage('ai', 'AI Opponent', 'Debate concluded. Thank you for the engaging discussion! Your arguments were well-reasoned.');
-                sendBtn.disabled = true;
-                messageInput.disabled = true;
-            });
-
-            newDebateBtn.addEventListener('click', function() {
-                window.location.href = "{{ url_for('topics') }}";
-            });
-
-            // Handles the "Send" button and Enter key presses
-            function sendMessage() {
-                const message = messageInput.value.trim();
-                if (message) {
-                    // Add the user's message to the UI
-                    addMessage('user', '{{ username }}', message);
-                    messageInput.value = '';
-
-                    // Show the "typing..." indicator
-                    document.getElementById('typing-indicator').style.display = 'flex';
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                    // Simulate AI "thinking" with a delay, then respond
-                    setTimeout(() => {
-                        document.getElementById('typing-indicator').style.display = 'none';
-                        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                        addMessage('ai', 'AI Opponent', randomResponse);
-                    }, 1500 + Math.random() * 2500);
-                }
+            // Enter key sends (Shift+Enter for newline)
+            if (messageInput) {
+                messageInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
             }
 
-            // Helper function to create HTML message bubbles dynamically
+            // End Debate — shows closing message and disables input
+            if (endDebateBtn) {
+                endDebateBtn.addEventListener('click', function() {
+                    addMessage('ai', 'AI Opponent',
+                        'Debate on "' + topicName + '" concluded. Well argued! You engaged clearly with the topic and responded to counterarguments thoughtfully.');
+                    if (sendBtn) sendBtn.disabled = true;
+                    if (messageInput) messageInput.disabled = true;
+                    this.disabled = true;
+                });
+            }
+
+            // New Debate — returns to topics
+            if (newDebateBtn) {
+                newDebateBtn.addEventListener('click', function() {
+                    window.location.href = '{{ url_for("topics") }}';
+                });
+            }
+
+            // ------------------------------------------------------------------
+            // CORE FUNCTIONS
+            // ------------------------------------------------------------------
+
+            // Sends the user message and triggers a delayed AI response
+            function sendMessage() {
+                if (!messageInput) return;
+                var message = messageInput.value.trim();
+                if (!message) return;
+
+                addMessage('user', '{{ username }}', message);
+                messageInput.value = '';
+
+                var typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) typingIndicator.style.display = 'flex';
+                if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Simulate AI thinking: 1.5–3.5 second delay
+                setTimeout(function() {
+                    if (typingIndicator) typingIndicator.style.display = 'none';
+                    var reply = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage('ai', 'AI Opponent', reply);
+                }, 1500 + Math.random() * 2000);
+            }
+
+            // Creates a styled chat bubble and appends it to the chat window
             function addMessage(type, sender, text) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${type}-message`;
-
-                messageDiv.innerHTML = `
-                    <div class="message-avatar">${type === 'user' ? '👤' : '🤖'}</div>
-                    <div class="message-content">
-                        <div class="message-header">${sender}</div>
-                        <div class="message-text">${text}</div>
-                    </div>
-                `;
-
-                chatMessages.appendChild(messageDiv);
+                if (!chatMessages) return;
+                var div = document.createElement('div');
+                div.className = 'message ' + type + '-message message-slide';
+                div.innerHTML =
+                    '<div class="message-avatar">' + (type === 'user' ? '👤' : '🤖') + '</div>' +
+                    '<div class="message-content">' +
+                        '<div class="message-header">' + sender + '</div>' +
+                        '<div class="message-text">' + text + '</div>' +
+                    '</div>';
+                chatMessages.appendChild(div);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+
         });
     </script>
 </body>
