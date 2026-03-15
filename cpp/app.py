@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+import google.generativeai as genai
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this to a random secret key
+
+# Configure Gemini
+genai.configure(api_key='AIzaSyAx0GhciWpuUyQFwO4aVKel8Tenavn-Adk')
 
 # Simple in-memory user storage (for demo purposes)
 users = {}
@@ -174,6 +178,38 @@ def conversations():
 def logout():
     session.pop('username', None) # Remove 'username' from session dictionary
     return redirect(url_for('login'))
+
+@app.route('/api/debate_response', methods=['POST'])
+def api_debate_response():
+    if 'username' not in session:
+        return {'error': 'Unauthorized'}, 401
+    
+    data = request.json
+    topic = data.get('topic', '')
+    position = data.get('position', '') # 'for' or 'against'
+    history = data.get('history', [])
+    
+    opposing_stance = 'AGAINST' if position == 'for' else 'FOR'
+    user_stance = 'FOR' if position == 'for' else 'AGAINST'
+    
+    system_prompt = f"You are an AI debating the topic '{topic}'. The user is arguing {user_stance}. You must take the opposing side ({opposing_stance}). Provide concise, compelling counter-arguments. Keep your responses under 100 words. Respond directly to the user's latest point."
+    
+    try:
+        model = genai.GenerativeModel('gemini-2.5-flash', system_instruction=system_prompt)
+        chat = model.start_chat(history=[])
+        
+        # Populate history
+        for msg in history[:-1]:  # all but the latest
+            role = "user" if msg['sender'] == 'user' else "model"
+            chat.history.append({"role": role, "parts": [msg['text']]})
+            
+        latest_msg = history[-1]['text'] if history else ""
+        response = chat.send_message(latest_msg)
+        
+        return {'reply': response.text}
+    except Exception as e:
+        print(f"Error from Gemini API: {e}")
+        return {'error': str(e)}, 500
 
 # Run the app in debug mode when executed directly
 if __name__ == '__main__':

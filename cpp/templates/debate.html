@@ -195,106 +195,9 @@
 
             // Topic name injected by Flask/Jinja at render time — safe as a plain string
             var topicName = '{{ topic }}';
-            var topicKey  = topicName.toLowerCase();
             var userPosition = null;
-
-            // ------------------------------------------------------------------
-            // AI RESPONSE BANK — keyed by topic keyword (checked with indexOf)
-            // ------------------------------------------------------------------
-            var aiResponses = {
-                'artificial intelligence': [
-                    'While AI brings many benefits, we must consider the ethical implications of autonomous systems making decisions that affect human lives.',
-                    'Accountability is the key concern — who is responsible when an AI system makes a harmful decision?',
-                    'Privacy is a major issue. AI requires vast personal data, creating systemic surveillance risks.',
-                    'Algorithmic bias is serious — models trained on historical data perpetuate and amplify societal inequalities.',
-                    'We need international AI governance frameworks, similar to how nuclear technology requires global regulation.'
-                ],
-                'climate': [
-                    'Renewable energy is essential, but intermittency requires solving grid-scale storage first.',
-                    'Carbon pricing incentivizes reductions, but poor design could disproportionately harm low-income communities.',
-                    'Individual actions matter, but systemic industrial and agricultural changes have far greater overall leverage.',
-                    'Geoengineering is risky — we do not fully understand cascading effects on global weather systems.',
-                    'Developing nations have the right to economic growth; industrialized countries must bear a greater share of the burden.'
-                ],
-                'education': [
-                    'Traditional education was designed for the industrial age and needs to evolve rapidly for the information economy.',
-                    'Personalized technology-enabled learning addresses individual needs far better than one-size-fits-all curricula.',
-                    'Critical thinking should be prioritized over rote memorization — technology already handles information storage.',
-                    'Teacher quality is the single most impactful in-school factor, yet teaching remains undervalued and undercompensated.',
-                    'Standardized testing creates perverse incentives, leading schools to teach to the test rather than build real understanding.'
-                ],
-                'universal basic income': [
-                    'UBI could provide an essential safety net as automation accelerates, though funding at scale is a genuine fiscal challenge.',
-                    'Pilot programs in Finland and Stockton showed minimal impact on employment, disproving the laziness narrative.',
-                    'UBI would stimulate local economies by increasing consumer purchasing power, especially in depressed regions.',
-                    'Targeted welfare programs are often more cost-effective than universal payments that also go to the wealthy.',
-                    'The real question is whether we can afford not to have UBI as millions of jobs are displaced by automation.'
-                ],
-                'gun': [
-                    'The Second Amendment was written for single-shot muskets — the founders could not have anticipated modern weapons.',
-                    'Nations with stricter gun regulations consistently show dramatically lower gun violence rates.',
-                    'The right to self-defense is legitimate. In rural areas, police response can take 30+ minutes.',
-                    'Universal background checks enjoy over 90 percent public support but Congress repeatedly fails to act — this is a breakdown of representation.',
-                    'Mental health investment and gun policy are complements, not alternatives — both are needed simultaneously.'
-                ],
-                'healthcare': [
-                    'Universal healthcare ensures access for all citizens, though systems need to carefully balance cost, quality, and efficiency.',
-                    'Prevention saves dramatically more than treatment — a dollar of prevention can save ten dollars of cure.',
-                    'Market competition drives pharma innovation, but patients having a heart attack cannot comparison-shop.',
-                    'Administrative overhead in multi-payer systems consumes roughly 30 percent of US healthcare spending — single-payer could eliminate most of it.',
-                    'Healthcare is a human right, not a commodity. No person should face financial ruin simply for becoming ill.'
-                ],
-                'democracy': [
-                    'Democracies are historically more stable, prosperous, and peaceful than authoritarian systems.',
-                    'Authoritarian efficiency is a myth — speed without accountability leads to unchecked, catastrophic mistakes.',
-                    'Democratic backsliding — elected leaders gradually dismantling checks and balances — is the defining threat of our era.',
-                    'A free press and free speech are error-correction mechanisms that allow societies to identify and fix mistakes.',
-                    'Economic growth does not require authoritarianism — South Korea, Taiwan, and Chile all democratized while growing.'
-                ],
-                'social media': [
-                    'Social media enabled connections and movements that would have been impossible before — its democratizing effects are real.',
-                    'Algorithmic amplification of outrage is the revenue model, not a bug — self-regulation will therefore never work.',
-                    'Measurable links between curated social feeds and teen depression and anxiety cannot be dismissed as anecdote.',
-                    'Section 230 immunity must be conditional on good-faith content moderation — platforms cannot have absolute protection.',
-                    'The surveillance advertising model — harvesting user data to sell targeted ads — is incompatible with user welfare.'
-                ],
-                'minimum wage': [
-                    'Research consistently shows moderate minimum wage increases do not cause the predicted job losses.',
-                    'No full-time worker should live in poverty. The US federal minimum has lost 40 percent of its purchasing power since the 1970s.',
-                    'Small businesses with thin margins can find a sudden large minimum wage increase genuinely existential.',
-                    'A single federal rate ignores regional cost of living differences — right for coastal cities, potentially harmful in rural areas.',
-                    'Automation of low-wage work is coming regardless of wage levels — companies always eventually pursue lower labor costs.'
-                ],
-                'space': [
-                    'Space exploration drives innovation that benefits life on Earth: GPS, medical imaging, water filtration all have space origins.',
-                    'The return on space investment through technological spin-offs is estimated to exceed the initial spending.',
-                    'Private companies have dramatically reduced launch costs, democratizing access to orbit.',
-                    'With poverty and climate change unsolved, some argue space funds should address urgent Earth-bound problems first.',
-                    'A multi-planetary species is humanity\'s best insurance against existential threats like asteroids or global pandemics.'
-                ]
-            };
-
-            // Find best matching response set by scanning topic keywords
-            var responses = null;
-            var keys = Object.keys(aiResponses);
-            for (var i = 0; i < keys.length; i++) {
-                if (topicKey.indexOf(keys[i]) !== -1) {
-                    responses = aiResponses[keys[i]];
-                    break;
-                }
-            }
-            // Fallback for any topic not matched above
-            if (!responses) {
-                responses = [
-                    'That is an important point. Could you support it with specific evidence or real-world examples?',
-                    'I see your perspective, but consider the strongest version of the opposing argument before dismissing it.',
-                    'Your position raises important implementation questions. How would this actually work in practice?',
-                    'Correlation is not causation — what direct evidence links your premise to your conclusion?',
-                    'The opposing side would argue exactly the opposite, and with real evidence. How do you respond?',
-                    'Every policy involves trade-offs. What are the unintended consequences of what you are proposing?',
-                    'Not everyone shares those underlying values. How would you persuade someone who genuinely disagrees?'
-                ];
-            }
+            // Initialize conversation history from backend passed data, or empty array
+            var conversationHistory = {{ (conversation | tojson | safe) if conversation else '[]' }};
 
             // ------------------------------------------------------------------
             // EVENT HANDLERS
@@ -306,8 +209,10 @@
                     var pastContainer = document.querySelector('.past-debate-container');
                     if (pastContainer) pastContainer.style.display = 'none';
                     if (chatContainer) chatContainer.style.display = 'flex';
-                    userPosition = 'for';
-                    addMessage('ai', 'AI Opponent', 'Welcome back! Let\'s continue our debate on "' + topicName + '". Go ahead.');
+                    userPosition = 'for'; // Assume 'for' or detect if available in previous logic
+                    var msg = 'Welcome back! Let\'s continue our debate on "' + topicName + '". Go ahead.';
+                    addMessage('ai', 'AI Opponent', msg);
+                    conversationHistory.push({sender: 'ai', text: msg});
                 });
             }
 
@@ -318,9 +223,10 @@
                     if (positionSelection) positionSelection.style.display = 'none';
                     if (chatContainer) chatContainer.style.display = 'flex';
                     var stance = userPosition === 'for' ? 'FOR' : 'AGAINST';
-                    addMessage('ai', 'AI Opponent',
-                        'I understand you are arguing ' + stance + ' "' + topicName + '". ' +
-                        'I will take the opposing position. Please present your opening argument.');
+                    var greetingMsg = 'I understand you are arguing ' + stance + ' "' + topicName + '". ' +
+                        'I will take the opposing position. Please present your opening argument.';
+                    addMessage('ai', 'AI Opponent', greetingMsg);
+                    conversationHistory.push({sender: 'ai', text: greetingMsg});
                 });
             });
 
@@ -366,18 +272,38 @@
                 if (!message) return;
 
                 addMessage('user', '{{ username }}', message);
+                conversationHistory.push({sender: 'user', text: message});
                 messageInput.value = '';
 
                 var typingIndicator = document.getElementById('typing-indicator');
                 if (typingIndicator) typingIndicator.style.display = 'flex';
                 if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
 
-                // Simulate AI thinking: 1.5–3.5 second delay
-                setTimeout(function() {
+                fetch('/api/debate_response', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        topic: topicName,
+                        position: userPosition,
+                        history: conversationHistory
+                    })
+                })
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
                     if (typingIndicator) typingIndicator.style.display = 'none';
-                    var reply = responses[Math.floor(Math.random() * responses.length)];
-                    addMessage('ai', 'AI Opponent', reply);
-                }, 1500 + Math.random() * 2000);
+                    if (data.error) {
+                        addMessage('ai', 'System Error', 'Error connecting to AI: ' + data.error);
+                    } else {
+                        var reply = data.reply;
+                        addMessage('ai', 'AI Opponent', reply);
+                        conversationHistory.push({sender: 'ai', text: reply});
+                    }
+                })
+                .catch(function(error) {
+                    if (typingIndicator) typingIndicator.style.display = 'none';
+                    addMessage('ai', 'System Error', 'Network error. Please try again later.');
+                    console.error('API Error:', error);
+                });
             }
 
             // Creates a styled chat bubble and appends it to the chat window
