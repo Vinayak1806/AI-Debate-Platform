@@ -2,25 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How It Works - AI Debate & Dialogue</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>How It Works - ArguAi</title>
+    {% include 'head_links.html' %}
 </head>
 
 <body>
-    <nav class="navbar">
-        <h2>AI Debate & Dialogue</h2>
-        <ul class="nav-links">
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('why_platform') }}">Why This Platform</a></li>
-            <li><a href="{{ url_for('how_it_works') }}" class="active">How It Works</a></li>
-            <li><a href="{{ url_for('features') }}">Features</a></li>
-            <li><a href="{{ url_for('topics') }}">Debate Topics</a></li>
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
-        </ul>
-        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
-    </nav>
+    {% include 'navbar.html' %}
 
     <div class="main-content">
         <div class="container animate-hero">

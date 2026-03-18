@@ -1,0 +1,21 @@
+<nav class="navbar">
+    <div class="nav-brand">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="ArguAi Logo" class="nav-logo">
+    </div>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active" {% endif %}>Home</a></li>
+        <li><a href="{{ url_for('why_platform') }}" {% if request.endpoint=='why_platform' %}class="active" {% endif
+                %}>Why This Platform</a></li>
+        <li><a href="{{ url_for('how_it_works') }}" {% if request.endpoint=='how_it_works' %}class="active" {% endif
+                %}>How It Works</a></li>
+        <li><a href="{{ url_for('features') }}" {% if request.endpoint=='features' %}class="active" {% endif
+                %}>Features</a></li>
+        <li><a href="{{ url_for('topics') }}" {% if request.endpoint=='topics' %}class="active" {% endif %}>Topics</a>
+        </li>
+        <li><a href="{{ url_for('conversations') }}" {% if request.endpoint=='conversations' %}class="active" {% endif
+                %}>History</a></li>
+        <li><a href="{{ url_for('profile') }}" {% if request.endpoint=='profile' %}class="active" {% endif
+                %}>Profile</a></li>
+    </ul>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+</nav>
