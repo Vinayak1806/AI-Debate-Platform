@@ -1,60 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - AI Debate and Dialogue</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body class="auth-body auth-page">
 
     <!-- Flash Messages via Toast -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div id="flash-toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;">
-                {% for category, message in messages %}
-                    <div class="toast show {{ category }}" style="position: relative; top: 0; right: 0; transform: none; display: flex; box-shadow: var(--shadow-md);">
-                        <span class="toast-icon" style="margin-right: 10px;">{{ '✅' if category == 'success' else '⚠️' }}</span>
-                        <span>{{ message }}</span>
-                    </div>
-                {% endfor %}
-            </div>
-            <script>
-                setTimeout(() => {
-                    const container = document.getElementById('flash-toast-container');
-                    if(container) container.style.opacity = '0';
-                    setTimeout(() => { if(container) container.style.display = 'none'; }, 500);
-                }, 4000);
-            </script>
-        {% endif %}
+    {% if messages %}
+    <div id="flash-toast-container"
+        style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;">
+        {% for category, message in messages %}
+        <div class="toast show {{ category }}"
+            style="position: relative; top: 0; right: 0; transform: none; display: flex; box-shadow: var(--shadow-md);">
+            <span class="toast-icon" style="margin-right: 10px;">{{ '✅' if category == 'success' else '⚠️' }}</span>
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        setTimeout(() => {
+            const container = document.getElementById('flash-toast-container');
+            if (container) container.style.opacity = '0';
+            setTimeout(() => { if (container) container.style.display = 'none'; }, 500);
+        }, 4000);
+    </script>
+    {% endif %}
     {% endwith %}
 
     <div class="main-content">
         <div class="container animate-hero">
-            <div class="auth-header" style="text-align: center;">
+            <div class="auth-header">
                 <h1>Join Our Community</h1>
-                <p style="color: var(--text-secondary); margin-bottom: 30px;">Create your account to start mastering communication</p>
+                <p>Create your account to start mastering communication</p>
             </div>
 
-            <form method="POST" class="auth-form" style="max-width: 380px; margin: 0 auto;">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label for="username" style="display: block; font-weight: 500; margin-bottom: 8px;">Username</label>
+            <form method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
                     <input type="text" id="username" name="username" required placeholder="Choose a username">
                 </div>
 
-                <div class="form-group" style="margin-bottom: 25px;">
-                    <label for="password" style="display: block; font-weight: 500; margin-bottom: 8px;">Password</label>
+                <div class="form-group">
+                    <label for="password">Password</label>
                     <input type="password" id="password" name="password" required placeholder="Create a password">
                 </div>
 
-                <button type="submit" class="auth-btn" style="width: 100%;">Create Account</button>
+                <button type="submit" class="auth-btn">Create Account</button>
             </form>
 
-            <div class="auth-links" style="text-align: center; margin-top: 25px;">
-                <p>Already have an account? <a href="{{ url_for('login') }}" style="font-weight: 600;">Sign in here</a></p>
+            <div class="auth-links">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></p>
             </div>
 
-            <div class="auth-features" style="display: flex; flex-direction: column; gap: 15px; margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 30px;">
+            <div class="auth-features">
                 <div class="feature-highlight">
                     <span class="highlight-icon">🚀</span>
                     <span>Free to Start</span>
@@ -72,5 +76,7 @@
     </div>
 
 
+    {% include 'footer.html' %}
 </body>
+
 </html>

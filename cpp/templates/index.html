@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - AI Debate and Dialogue</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='animations.js') }}"></script>
 </head>
+
 <body class="light-theme">
     <!--
         NAVIGATION BAR
@@ -31,12 +33,14 @@
             MAIN HERO SECTION
             The introductory section of the homepage with the primary call-to-action (Start Debating).
         -->
-        <div class="container">
+        <div class="container hero-container">
             <div class="welcome-hero animate-hero" style="--delay: 0.2s;">
                 <div class="hero-content">
+                    <div class="hero-badge">✨ AI-Powered Battle of Wits</div>
                     <h1 class="hero-title">Master Communication</h1>
                     <h2 class="hero-subtitle">with AI-Powered Debate & Dialogue</h2>
-                    <p class="hero-description">Enhance your critical thinking, argumentation skills, and communication abilities through intelligent AI-powered debates on diverse topics.</p>
+                    <p class="hero-description">Enhance your critical thinking, argumentation skills, and communication
+                        abilities through intelligent AI-powered debates on diverse topics.</p>
 
                     <div class="hero-features">
                         <div class="feature-item">
@@ -109,20 +113,23 @@
                 <h3>Your Recent Debates</h3>
                 <div class="history-list">
                     {% if recent_debates %}
-                        {% for deb in recent_debates %}
-                        <div class="history-item">
-                            <div class="history-info">
-                                <span class="history-topic">{{ deb.topic }}</span>
-                                <span class="history-date">{{ deb.date }}</span>
-                            </div>
-                            <div class="history-result {{ 'win' if deb.result == 'user' else ('loss' if deb.result == 'ai' else 'draw') }}">
-                                {{ deb.result.title() if deb.result else 'Pending' }}
-                            </div>
-                            <a href="{{ url_for('debate', topic=deb.topic.replace(' ', '_'), view_past='true') }}" class="view-btn">View</a>
+                    {% for deb in recent_debates %}
+                    <div class="history-item">
+                        <div class="history-info">
+                            <span class="history-topic">{{ deb.topic }}</span>
+                            <span class="history-date">{{ deb.date }}</span>
                         </div>
-                        {% endfor %}
+                        <div
+                            class="history-result {{ 'win' if deb.result == 'user' else ('loss' if deb.result == 'ai' else 'draw') }}">
+                            {{ deb.result.title() if deb.result else 'Pending' }}
+                        </div>
+                        <a href="{{ url_for('debate', topic=deb.topic.replace(' ', '_'), view_past='true') }}"
+                            class="view-btn">View</a>
+                    </div>
+                    {% endfor %}
                     {% else %}
-                        <p style="text-align: center; color: var(--text-secondary);">No debates yet. Start your first journey above!</p>
+                    <p style="text-align: center; color: var(--text-secondary);">No debates yet. Start your first
+                        journey above!</p>
                     {% endif %}
                 </div>
                 <a href="{{ url_for('conversations') }}" class="view-all-history">View All Debate History</a>
@@ -147,11 +154,11 @@
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(40px 40px at var(--bubble1, 20% 80%), rgba(255,107,157,0.15) 0%, transparent 50%),
-                radial-gradient(30px 30px at var(--bubble2, 80% 30%), rgba(165,94,234,0.12) 0%, transparent 50%),
-                radial-gradient(50px 50px at var(--bubble3, 10% 60%), rgba(74,222,128,0.1) 0%, transparent 50%),
-                radial-gradient(35px 35px at var(--bubble4, 70% 90%), rgba(96,165,250,0.12) 0%, transparent 50%);
-            animation: 
+                radial-gradient(40px 40px at var(--bubble1, 20% 80%), rgba(255, 107, 157, 0.15) 0%, transparent 50%),
+                radial-gradient(30px 30px at var(--bubble2, 80% 30%), rgba(165, 94, 234, 0.12) 0%, transparent 50%),
+                radial-gradient(50px 50px at var(--bubble3, 10% 60%), rgba(74, 222, 128, 0.1) 0%, transparent 50%),
+                radial-gradient(35px 35px at var(--bubble4, 70% 90%), rgba(96, 165, 250, 0.12) 0%, transparent 50%);
+            animation:
                 bubbleFloat1 25s ease-in-out infinite,
                 bubbleFloat2 30s ease-in-out infinite reverse,
                 bubbleFloat3 22s ease-in-out infinite,
@@ -160,28 +167,72 @@
         }
 
         @keyframes bubbleFloat1 {
-            0%, 100% { transform: translateY(0) translateX(0); --bubble1: 20% 80%; }
-            33% { transform: translateY(-30px) translateX(10px); --bubble1: 25% 70%; }
-            66% { transform: translateY(-15px) translateX(-5px); --bubble1: 15% 85%; }
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                --bubble1: 20% 80%;
+            }
+
+            33% {
+                transform: translateY(-30px) translateX(10px);
+                --bubble1: 25% 70%;
+            }
+
+            66% {
+                transform: translateY(-15px) translateX(-5px);
+                --bubble1: 15% 85%;
+            }
         }
 
         @keyframes bubbleFloat2 {
-            0%, 100% { transform: translateY(0) translateX(0); --bubble2: 80% 30%; }
-            50% { transform: translateY(-25px) translateX(15px); --bubble2: 85% 25%; }
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                --bubble2: 80% 30%;
+            }
+
+            50% {
+                transform: translateY(-25px) translateX(15px);
+                --bubble2: 85% 25%;
+            }
         }
 
         @keyframes bubbleFloat3 {
-            0%, 100% { transform: translateY(0) translateX(0); --bubble3: 10% 60%; }
-            25% { transform: translateY(-40px) translateX(-10px); --bubble3: 5% 50%; }
-            75% { transform: translateY(-20px) translateX(5px); --bubble3: 15% 65%; }
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                --bubble3: 10% 60%;
+            }
+
+            25% {
+                transform: translateY(-40px) translateX(-10px);
+                --bubble3: 5% 50%;
+            }
+
+            75% {
+                transform: translateY(-20px) translateX(5px);
+                --bubble3: 15% 65%;
+            }
         }
 
         @keyframes bubbleFloat4 {
-            0%, 100% { transform: translateY(0) translateX(0); --bubble4: 70% 90%; }
-            50% { transform: translateY(-35px) translateX(-20px); --bubble4: 65% 85%; }
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                --bubble4: 70% 90%;
+            }
+
+            50% {
+                transform: translateY(-35px) translateX(-20px);
+                --bubble4: 65% 85%;
+            }
         }
 
-        .welcome-hero .hero-content > * {
+        .welcome-hero .hero-content>* {
             animation: fadeInUp 0.8s var(--delay, 0s) ease-out forwards;
             opacity: 0;
         }
@@ -204,7 +255,7 @@
             color: #2c3e50;
             margin: 0 0 10px 0;
             letter-spacing: 2px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .hero-subtitle {
@@ -212,7 +263,7 @@
             font-weight: 600;
             color: #4CAF50;
             margin: 0 0 20px 0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .hero-description {
@@ -239,14 +290,14 @@
             padding: 15px;
             background: white;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             min-width: 120px;
         }
 
         .feature-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .feature-icon {
@@ -296,8 +347,8 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: var(--glass-blur);
             color: var(--text-primary);
-            border: 2px solid rgba(0,0,0,0.1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .cta-button.secondary:hover {
@@ -321,7 +372,7 @@
             padding: 20px;
             background: white;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             min-width: 120px;
         }
 
@@ -348,7 +399,7 @@
             text-decoration: none;
             border-radius: 25px;
             transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             color: var(--text-primary);
             font-weight: 500;
         }
@@ -392,9 +443,19 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px) translateX(0px) scale(1); }
-            33% { transform: translateY(-20px) translateX(10px) scale(1.05); }
-            66% { transform: translateY(-10px) translateX(-10px) scale(0.95); }
+
+            0%,
+            100% {
+                transform: translateY(0px) translateX(0px) scale(1);
+            }
+
+            33% {
+                transform: translateY(-20px) translateX(10px) scale(1.05);
+            }
+
+            66% {
+                transform: translateY(-10px) translateX(-10px) scale(0.95);
+            }
         }
 
         @media (max-width: 768px) {
@@ -535,5 +596,7 @@
             box-shadow: 0 8px 20px rgba(165, 94, 234, 0.3);
         }
     </style>
+    {% include 'footer.html' %}
 </body>
+
 </html>

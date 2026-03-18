@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How It Works - AI Debate & Dialogue</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <nav class="navbar">
         <h2>AI Debate & Dialogue</h2>
@@ -23,43 +25,50 @@
     <div class="main-content">
         <div class="container animate-hero">
             <h1 style="margin-bottom: 15px;">How AI Debate Teams Work</h1>
-            <p style="text-align: center; color: var(--text-secondary);">An elegant approach to mastering the art of persuasion.</p>
+            <p style="text-align: center; color: var(--text-secondary);">An elegant approach to mastering the art of
+                persuasion.</p>
 
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-number">1</div>
                     <h3>Choose Your Topic</h3>
-                    <p>Browse our extensive collection of debate topics or use our search feature to find topics that interest you.</p>
+                    <p>Browse our extensive collection of debate topics or use our search feature to find topics that
+                        interest you.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number">2</div>
                     <h3>Select Position</h3>
-                    <p>Choose whether you want to argue for or against the topic. The AI will strategically take the opposing position.</p>
+                    <p>Choose whether you want to argue for or against the topic. The AI will strategically take the
+                        opposing position.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number">3</div>
                     <h3>Launch Opening</h3>
-                    <p>Begin with your opening argument. The AI will analyze your points and respond with structured counterarguments.</p>
+                    <p>Begin with your opening argument. The AI will analyze your points and respond with structured
+                        counterarguments.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number">4</div>
                     <h3>Engage Intelligently</h3>
-                    <p>Continue the conversation by responding. Use evidence, logic, and persuasive techniques to strengthen your case.</p>
+                    <p>Continue the conversation by responding. Use evidence, logic, and persuasive techniques to
+                        strengthen your case.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number">5</div>
                     <h3>Receive Feedback</h3>
-                    <p>Unlock achievements and gain xp on your argumentation quality, logical consistency, and overall debating skills.</p>
+                    <p>Unlock achievements and gain xp on your argumentation quality, logical consistency, and overall
+                        debating skills.</p>
                 </div>
 
                 <div class="step-card">
                     <div class="step-number">6</div>
                     <h3>Track Progress</h3>
-                    <p>View your debate history, win/loss rates, and skill improvement over time via your premium profile dashboard.</p>
+                    <p>View your debate history, win/loss rates, and skill improvement over time via your premium
+                        profile dashboard.</p>
                 </div>
             </div>
 
@@ -68,19 +77,26 @@
                 <div class="demo-chat">
                     <div class="chat-bubble user">
                         <strong>You</strong>
-                        I believe that artificial intelligence will create more jobs than it destroys, driving a new renaissance of tools.
+                        I believe that artificial intelligence will create more jobs than it destroys, driving a new
+                        renaissance of tools.
                     </div>
                     <div class="chat-bubble ai">
                         <strong>AI Antagonist</strong>
-                        While AI may create roles, historical precedents show that technological advancements often lead to net job loss in short-term. Automation in manufacturing rapidly displaced millions of manual laborers before equilibrium was reached.
+                        While AI may create roles, historical precedents show that technological advancements often lead
+                        to net job loss in short-term. Automation in manufacturing rapidly displaced millions of manual
+                        laborers before equilibrium was reached.
                     </div>
                     <div class="chat-bubble user">
                         <strong>You</strong>
-                        But those workers were retrained for new industries. AI will be similar - it will eliminate routine drudgery but create an explosive demand for creative, emotional, and highly technical coordination roles.
+                        But those workers were retrained for new industries. AI will be similar - it will eliminate
+                        routine drudgery but create an explosive demand for creative, emotional, and highly technical
+                        coordination roles.
                     </div>
                     <div class="chat-bubble ai">
                         <strong>AI Antagonist</strong>
-                        That's a valid point on retraining, but the scale and velocity of AI adoption drastically outpaces our geopolitical ability to retrain massive swaths of workers successfully. How do we close the short-term transition gap?
+                        That's a valid point on retraining, but the scale and velocity of AI adoption drastically
+                        outpaces our geopolitical ability to retrain massive swaths of workers successfully. How do we
+                        close the short-term transition gap?
                     </div>
                 </div>
             </div>
@@ -97,17 +113,16 @@
         .steps-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin: 40px 0;
+            gap: 32px;
+            margin: 60px 0;
         }
 
         .step-card {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            padding: 30px 20px;
-            border-radius: var(--border-radius);
+            background: white;
+            padding: 40px 30px;
+            border-radius: var(--border-radius-lg);
             text-align: center;
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(0, 0, 0, 0.02);
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
             position: relative;
@@ -115,35 +130,37 @@
 
         .step-card:hover {
             transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-premium);
             border-color: var(--accent-purple);
         }
 
         .step-number {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background: var(--gradient-premium);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin: 0 auto 20px;
-            box-shadow: 0 4px 15px rgba(165, 94, 234, 0.4);
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin: 0 auto 24px;
+            box-shadow: 0 8px 20px rgba(165, 94, 234, 0.3);
         }
 
         .step-card h3 {
             color: var(--text-primary);
-            margin: 0 0 12px 0;
-            font-size: 1.25rem;
+            margin: 0 0 16px 0;
+            font-size: 1.4rem;
+            font-weight: 700;
         }
 
         .step-card p {
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.7;
             margin: 0;
+            font-size: 0.95rem;
         }
 
         .demo-section {
@@ -151,7 +168,7 @@
             padding: 40px;
             border-radius: 24px;
             margin: 50px 0;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .demo-chat {
@@ -183,9 +200,9 @@
             color: var(--text-primary);
             align-self: flex-start;
             border-bottom-left-radius: 4px;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        
+
         .chat-bubble strong {
             display: block;
             margin-bottom: 6px;
@@ -202,7 +219,7 @@
             margin-top: 50px;
             box-shadow: var(--shadow-md);
         }
-        
+
         .start-section h2 {
             color: white;
         }
@@ -217,13 +234,15 @@
             font-weight: 700;
             transition: var(--transition);
             margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .start-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
     </style>
+    {% include 'footer.html' %}
 </body>
+
 </html>

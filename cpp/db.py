@@ -2,10 +2,9 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 
-# Load .env from the same directory as this file (cpp/), 
-# regardless of which directory Flask is launched from
+# Load .env from the root directory (parent of cpp/)
 _dir = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(os.path.join(_dir, '.env'))
+load_dotenv(os.path.join(_dir, '..', '.env'))
 
 def get_db_connection():
     """

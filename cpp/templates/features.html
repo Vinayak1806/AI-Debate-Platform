@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,25 +11,24 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         .feature-card {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            padding: 24px;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-md);
+            background: white;
+            padding: 32px;
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            box-shadow: var(--shadow-sm);
             transition: var(--transition);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-premium);
             border-color: var(--accent-purple);
         }
 
@@ -36,19 +36,21 @@
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             color: var(--text-primary);
-            font-size: 1.25rem;
+            font-size: 1.35rem;
+            font-weight: 700;
         }
 
         .feature-card p {
             margin: 0;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.7;
+            font-size: 0.95rem;
         }
-        
+
         .feature-icon {
-            font-size: 1.8rem;
+            font-size: 2rem;
             background: var(--gradient-premium);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -56,6 +58,7 @@
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar">
         <h2>AI Debate & Dialogue</h2>
@@ -80,45 +83,55 @@
             <div class="features-grid">
                 <div class="feature-card">
                     <h3><span class="feature-icon">🔐</span> Secure Authentication</h3>
-                    <p>Create your account with a secure login and signup system. Your credentials are protected and kept confidential.</p>
+                    <p>Create your account with a secure login and signup system. Your credentials are protected and
+                        kept confidential.</p>
                 </div>
 
                 <div class="feature-card">
                     <h3><span class="feature-icon">💬</span> AI-Powered Debates</h3>
-                    <p>Engage in intelligent debates with our AI system. Discuss various topics and get thoughtful responses from advanced algorithms.</p>
+                    <p>Engage in intelligent debates with our AI system. Discuss various topics and get thoughtful
+                        responses from advanced algorithms.</p>
                 </div>
 
                 <div class="feature-card">
                     <h3><span class="feature-icon">🗣️</span> Natural Dialogue</h3>
-                    <p>Experience natural conversations with AI that understands context and provides relevant, deeply logical responses.</p>
+                    <p>Experience natural conversations with AI that understands context and provides relevant, deeply
+                        logical responses.</p>
                 </div>
 
                 <div class="feature-card">
                     <h3><span class="feature-icon">📚</span> Topic Variety</h3>
-                    <p>Debate on a wide range of topics including science, philosophy, current events, technology, and more.</p>
+                    <p>Debate on a wide range of topics including science, philosophy, current events, technology, and
+                        more.</p>
                 </div>
 
                 <div class="feature-card">
                     <h3><span class="feature-icon">⚡</span> Real-time Interaction</h3>
-                    <p>Get instant responses and engage in fast-paced debates with real-time feedback from the AI reasoning engine.</p>
+                    <p>Get instant responses and engage in fast-paced debates with real-time feedback from the AI
+                        reasoning engine.</p>
                 </div>
 
                 <div class="feature-card">
                     <h3><span class="feature-icon">📊</span> Debate History</h3>
-                    <p>Keep track of your previous debates and review past conversations to improve your argumentation skills over time.</p>
+                    <p>Keep track of your previous debates and review past conversations to improve your argumentation
+                        skills over time.</p>
                 </div>
 
                 <div class="feature-card">
                     <h3><span class="feature-icon">🎯</span> Smart Arguments</h3>
-                    <p>Receive intelligent counterarguments and learn new perspectives on various complex topics through structured debate formats.</p>
+                    <p>Receive intelligent counterarguments and learn new perspectives on various complex topics through
+                        structured debate formats.</p>
                 </div>
 
                 <div class="feature-card">
                     <h3><span class="feature-icon">🌐</span> Premium UI</h3>
-                    <p>Enjoy a clean, glassmorphic design that makes engaging in debates visually stunning and highly legible for long reading sessions.</p>
+                    <p>Enjoy a clean, glassmorphic design that makes engaging in debates visually stunning and highly
+                        legible for long reading sessions.</p>
                 </div>
             </div>
         </div>
     </div>
+    {% include 'footer.html' %}
 </body>
+
 </html>

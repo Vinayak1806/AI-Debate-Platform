@@ -4,21 +4,26 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 import google.generativeai as genai
 from datetime import date
 from dotenv import load_dotenv
+from werkzeug.security import generate_password_hash, check_password_hash
 from db import get_db_connection
 
-# Load .env from the same directory as app.py (cpp/) regardless of launch directory
+# Load .env from the root directory (parent of cpp/)
 _app_dir = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(os.path.join(_app_dir, '.env'))
+load_dotenv(os.path.join(_app_dir, '..', '.env'))
 
 app = Flask(__name__)
 
 # Secure Config Management: Get secret keys from environment variables
 # Fallback keys are provided ONLY for development/demo purposes. In production, 
 # you MUST set these environment variables and NEVER hardcode secrets.
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dev_fallback_secret_key')
+app.secret_key = os.environ.get('FLASK_SECRET_KEY')
+if not app.secret_key:
+    raise ValueError("FLASK_SECRET_KEY not found in environment. Please check your .env file.")
 
 # Configure Gemini API client
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyAx0GhciWpuUyQFwO4aVKel8Tenavn-Adk')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY not found in environment. Please check your .env file.")
 genai.configure(api_key=GEMINI_API_KEY)
 
 
@@ -102,18 +107,16 @@ def login():
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+            cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
             user = cursor.fetchone()
             cursor.close()
             conn.close()
             
-            if user:
+            if user and check_password_hash(user['password'], password):
                 session['username'] = username  # Log the user in by storing in session
                 session['user_id'] = user['id']
                 return redirect(url_for('home'))
         
-        # In a real app, flash a generic error message (e.g., "Invalid credentials")
-        # to avoid leaking whether the username exists or the password was wrong.
         return 'Invalid credentials'
     return render_template('login.html')
 
@@ -138,9 +141,10 @@ def signup():
                 return 'Username already exists'
                 
             joined_date = date.today().strftime('%b %d, %Y')
+            hashed_password = generate_password_hash(password)
             cursor.execute(
                 "INSERT INTO users (username, password, display_name, joined_date) VALUES (%s, %s, %s, %s)",
-                (username, password, username, joined_date)
+                (username, hashed_password, username, joined_date)
             )
             conn.commit()
             
@@ -367,12 +371,13 @@ def change_password():
     cursor.execute("SELECT password FROM users WHERE id = %s", (user_id,))
     row = cursor.fetchone()
     
-    if not row or row['password'] != old:
+    if not row or not check_password_hash(row['password'], old):
         cursor.close(); conn.close()
         return jsonify({'error': 'Current password incorrect'}), 403
     
-    # Update to new password
-    cursor.execute("UPDATE users SET password = %s WHERE id = %s", (new, user_id))
+    # Update to new hashed password
+    hashed_password = generate_password_hash(new)
+    cursor.execute("UPDATE users SET password = %s WHERE id = %s", (hashed_password, user_id))
     conn.commit()
     cursor.close(); conn.close()
     return jsonify({'ok': True})

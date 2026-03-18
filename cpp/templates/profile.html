@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <!-- profile.html — dynamic profile page that reflects current user data and supports live updates -->
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - AI Debate and Dialogue</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <nav class="navbar">
         <h2>AI Debate & Dialogue</h2>
@@ -22,7 +24,7 @@
     </nav>
 
     <div class="main-content">
-        <div class="container" style="background: transparent; box-shadow: none; padding: 0;">
+        <div class="container profile-container">
             <div class="profile-header">
                 <div class="avatar-container">
                     <div class="avatar-main">{{ username[0] | upper if username else 'U' }}</div>
@@ -30,7 +32,8 @@
                 <div class="profile-header-info">
                     <h1>{{ username }}</h1>
                     <span class="member-badge">Elite Debater</span>
-                    <p id="joinedAt" style="margin-top: 10px; color: var(--text-secondary); font-size: 0.9rem;">Member since {{ joined }}</p>
+                    <p id="joinedAt" style="margin-top: 10px; color: var(--text-secondary); font-size: 0.9rem;">Member
+                        since {{ joined }}</p>
                 </div>
             </div>
 
@@ -60,12 +63,18 @@
                 <div class="progress-container">
                     {% for label, pct in progress.items() %}
                     <div class="progress-item" data-label="{{ label }}" style="margin-bottom: 1.5rem;">
-                        <div class="progress-label" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span class="progress-name" style="font-weight: 600; color: var(--text-primary);">{{ label }}</span>
-                            <span class="progress-value" style="color: var(--accent-purple); font-weight: 700;">{{ pct }}%</span>
+                        <div class="progress-label"
+                            style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span class="progress-name" style="font-weight: 600; color: var(--text-primary);">{{ label
+                                }}</span>
+                            <span class="progress-value" style="color: var(--accent-purple); font-weight: 700;">{{ pct
+                                }}%</span>
                         </div>
-                        <div class="progress-bar" style="height: 10px; background: #edf2f7; border-radius: 5px; overflow: hidden;">
-                            <div class="progress-fill" style="width: {{ pct }}%; height: 100%; background: var(--gradient-premium); border-radius: 5px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);" data-fill></div>
+                        <div class="progress-bar"
+                            style="height: 10px; background: #edf2f7; border-radius: 5px; overflow: hidden;">
+                            <div class="progress-fill"
+                                style="width: {{ pct }}%; height: 100%; background: var(--gradient-premium); border-radius: 5px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"
+                                data-fill></div>
                         </div>
                     </div>
                     {% endfor %}
@@ -79,7 +88,8 @@
                 </div>
                 <div class="achievements-premium-grid">
                     {% for a in achievements %}
-                    <div class="ach-card {% if a.unlocked %}unlocked{% else %}locked{% endif %}" data-title="{{ a.title }}" title="{{ a.desc }}">
+                    <div class="ach-card {% if a.unlocked %}unlocked{% else %}locked{% endif %}"
+                        data-title="{{ a.title }}" title="{{ a.desc }}">
                         <div class="ach-card-icon">{{ a.icon }}</div>
                         <div class="ach-card-title">{{ a.title }}</div>
                     </div>
@@ -139,7 +149,8 @@
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <h3>Delete Account</h3>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5;">Are you absolutely sure you want to delete your account? This action cannot be undone and you will lose all progress.</p>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5;">Are you absolutely sure you
+                want to delete your account? This action cannot be undone and you will lose all progress.</p>
             <div class="modal-actions">
                 <button id="confirmDeleteBtn" class="delete-btn">Yes, Delete Account</button>
                 <button id="cancelDeleteBtn">Cancel</button>
@@ -154,9 +165,9 @@
     </div>
 
     <script>
-        function showModal(id, show){ 
+        function showModal(id, show) {
             const modal = document.getElementById(id);
-            if(show) {
+            if (show) {
                 modal.classList.add('show');
             } else {
                 modal.classList.remove('show');
@@ -177,7 +188,7 @@
             }, 3000);
         }
 
-        document.addEventListener('DOMContentLoaded', function(){
+        document.addEventListener('DOMContentLoaded', function () {
             const editBtn = document.querySelector('.btn-edit');
             const changeBtn = document.querySelector('.btn-pwd');
             const deleteBtn = document.querySelector('.btn-del');
@@ -194,18 +205,18 @@
                 });
             });
 
-            editBtn.addEventListener('click', ()=>{
+            editBtn.addEventListener('click', () => {
                 displayInput.value = displayValueEl ? displayValueEl.textContent.trim() : '';
                 document.getElementById('usernameInput').value = '{{ raw_username }}';
                 showModal('editModal', true);
             });
-            document.getElementById('cancelEditBtn').addEventListener('click', ()=> showModal('editModal', false));
+            document.getElementById('cancelEditBtn').addEventListener('click', () => showModal('editModal', false));
 
-            document.getElementById('saveProfileBtn').addEventListener('click', async ()=>{
+            document.getElementById('saveProfileBtn').addEventListener('click', async () => {
                 const form = new FormData();
                 const newDisplay = displayInput.value || '';
                 const newUsername = document.getElementById('usernameInput').value || '';
-                
+
                 form.append('display_name', newDisplay);
                 form.append('username', newUsername);
                 try {
@@ -216,23 +227,23 @@
                         // Update avatar initial if display name changed
                         const avatar = document.querySelector('.avatar-main');
                         if (avatar && json.display_name) avatar.textContent = json.display_name[0].toUpperCase();
-                        
+
                         showModal('editModal', false);
                         showToast('Profile updated successfully!');
                         // Optionally reload to sync all template tags
                         setTimeout(() => window.location.reload(), 1000);
                     } else { showToast(json.error || 'Update failed', 'error'); }
-                } catch(e) {
+                } catch (e) {
                     showToast('Network error occurred.', 'error');
                 }
             });
 
-            changeBtn.addEventListener('click', ()=> showModal('pwdModal', true));
-            document.getElementById('cancelPwdBtn').addEventListener('click', ()=> showModal('pwdModal', false));
-            document.getElementById('savePwdBtn').addEventListener('click', async ()=>{
+            changeBtn.addEventListener('click', () => showModal('pwdModal', true));
+            document.getElementById('cancelPwdBtn').addEventListener('click', () => showModal('pwdModal', false));
+            document.getElementById('savePwdBtn').addEventListener('click', async () => {
                 const oldPwd = document.getElementById('oldPwd').value;
                 const newPwd = document.getElementById('newPwd').value;
-                
+
                 if (!oldPwd || !newPwd) {
                     showToast('Please fill in both fields', 'error');
                     return;
@@ -250,36 +261,36 @@
                         document.getElementById('oldPwd').value = '';
                         document.getElementById('newPwd').value = '';
                     } else { showToast(json.error || 'Password change failed', 'error'); }
-                } catch(e) {
+                } catch (e) {
                     showToast('Network error occurred.', 'error');
                 }
             });
 
-            deleteBtn.addEventListener('click', ()=> showModal('deleteModal', true));
-            document.getElementById('cancelDeleteBtn').addEventListener('click', ()=> showModal('deleteModal', false));
-            document.getElementById('confirmDeleteBtn').addEventListener('click', async ()=>{
+            deleteBtn.addEventListener('click', () => showModal('deleteModal', true));
+            document.getElementById('cancelDeleteBtn').addEventListener('click', () => showModal('deleteModal', false));
+            document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
                 try {
                     const res = await fetch('/profile/delete', { method: 'POST' });
                     const json = await res.json();
-                    if (json.ok) { 
+                    if (json.ok) {
                         showModal('deleteModal', false);
                         showToast('Account deleted. Redirecting...');
                         setTimeout(() => {
-                            window.location.href = '/signup'; 
+                            window.location.href = '/signup';
                         }, 1500);
                     } else { showToast(json.error || 'Delete failed', 'error'); }
-                } catch(e) {
+                } catch (e) {
                     showToast('Network error occurred.', 'error');
                 }
             });
 
             // Refresh profile data periodically and on load
-            async function refreshProfileData(){
-                try{
+            async function refreshProfileData() {
+                try {
                     const res = await fetch('/profile/data');
                     if (!res.ok) return;
                     const json = await res.json();
-                    
+
                     if (json.display_name) document.querySelector('.profile-header-info h1').textContent = json.display_name;
                     document.getElementById('debatesCount').textContent = json.debates || 0;
                     document.getElementById('winRate').textContent = json.win_rate || '0%';
@@ -288,7 +299,7 @@
                     const progress = json.progress || {};
                     Object.keys(progress).forEach(label => {
                         const item = document.querySelector(`.progress-item[data-label="${label}"]`);
-                        if (item){
+                        if (item) {
                             const pct = progress[label];
                             const valueEl = item.querySelector('.progress-value');
                             const fill = item.querySelector('[data-fill]');
@@ -300,7 +311,7 @@
                     const achs = json.achievements || [];
                     achs.forEach(a => {
                         const el = document.querySelector(`.ach-card[data-title="${a.title}"]`);
-                        if (el){
+                        if (el) {
                             if (a.unlocked) {
                                 el.classList.add('unlocked');
                                 el.classList.remove('locked');
@@ -311,12 +322,14 @@
                         }
                     });
 
-                }catch(e){ console.log('refreshProfileData error', e); }
+                } catch (e) { console.log('refreshProfileData error', e); }
             }
             // Add a small delay for load to ensure layout parses
             setTimeout(refreshProfileData, 100);
             setInterval(refreshProfileData, 5000);
         });
     </script>
+    {% include 'footer.html' %}
 </body>
+
 </html>

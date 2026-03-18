@@ -19,7 +19,7 @@ A premium AI-powered debating platform that allows users to engage in logical ba
 3. This will create the `debate_platform` database and all necessary tables.
 
 ### 2. Environment Configuration
-Create a `.env` file in the `cpp/` directory with the following:
+Create a `.env` file in the **root directory** with the following:
 ```env
 FLASK_SECRET_KEY=your_secret_key
 GEMINI_API_KEY=your_gemini_api_key
@@ -38,6 +38,7 @@ pip install -r requirements.txt
 
 ### 4. Run the Application
 ```powershell
+# From the root directory:
 python cpp/app.py
 ```
 Open `http://127.0.0.1:5000` in your browser.

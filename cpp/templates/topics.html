@@ -68,34 +68,36 @@
 
     <style>
         .topics-page-container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 24px 60px;
+            padding: 60px 24px 80px;
         }
 
         .topics-title {
             text-align: center;
-            font-size: 2.8rem;
+            font-size: clamp(2.5rem, 6vw, 3.8rem);
             font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-purple, #a855f7), var(--accent-blue, #6366f1));
+            background: var(--gradient-premium);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
         }
 
         .topics-subtitle {
             text-align: center;
-            color: #64748b;
-            font-size: 1.05rem;
-            margin-bottom: 32px;
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            margin-bottom: 48px;
+            font-weight: 500;
         }
 
         /* ── SEARCH BAR ── */
         .search-section {
             display: flex;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
         }
 
         .search-input-wrapper {
@@ -103,17 +105,17 @@
             align-items: center;
             background: white;
             border-radius: 40px;
-            padding: 6px 6px 6px 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border: 1.5px solid rgba(0, 0, 0, 0.06);
+            padding: 8px 8px 8px 24px;
+            box-shadow: var(--shadow-premium);
+            border: 1px solid rgba(0, 0, 0, 0.04);
             width: 100%;
-            max-width: 620px;
-            transition: box-shadow 0.3s, border-color 0.3s;
+            max-width: 680px;
+            transition: var(--transition);
         }
 
         .search-input-wrapper:focus-within {
-            box-shadow: 0 4px 24px rgba(168, 85, 247, 0.2);
-            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 10px 40px -10px rgba(165, 94, 234, 0.25);
+            border-color: var(--accent-purple);
         }
 
         .search-icon {
@@ -147,8 +149,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             margin-right: 10px;
+            margin-top: 0px;
         }
 
         .mic-btn:hover {
@@ -170,6 +173,8 @@
             transition: all 0.25s;
             white-space: nowrap;
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            margin-top: 0px;
+            margin-right: 12px;
         }
 
         .search-btn:hover {
@@ -318,7 +323,7 @@
         .topic-link-card {
             display: block;
             padding: 14px 18px;
-            background: rgba(255,255,255,0.4);
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 10px;
             border-left: 4px solid var(--accent-purple);
             color: var(--text-primary);
@@ -377,6 +382,7 @@
 
     <script src="{{ url_for('static', filename='topics-data.js') }}"></script>
     <script src="{{ url_for('static', filename='topics.js') }}"></script>
+    {% include 'footer.html' %}
 </body>
 
 </html>
