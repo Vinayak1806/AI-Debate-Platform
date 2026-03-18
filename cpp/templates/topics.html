@@ -137,18 +137,25 @@
         }
 
         .mic-btn {
-            background: none;
-            border: none;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             cursor: pointer;
-            color: #94a3b8;
-            padding: 6px;
+            color: #64748b;
+            padding: 8px;
             border-radius: 50%;
-            transition: color 0.2s, background 0.2s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-right: 10px;
         }
 
         .mic-btn:hover {
             color: #a855f7;
-            background: rgba(168, 85, 247, 0.08);
+            background: white;
+            box-shadow: 0 4px 10px rgba(168, 85, 247, 0.15);
+            border-color: rgba(168, 85, 247, 0.2);
         }
 
         .search-btn {
@@ -156,13 +163,13 @@
             color: white;
             border: none;
             border-radius: 30px;
-            padding: 10px 24px;
-            font-weight: 600;
+            padding: 10px 28px;
+            font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
-            margin-left: 8px;
             transition: all 0.25s;
             white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
         .search-btn:hover {

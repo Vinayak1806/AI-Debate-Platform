@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS debate_sessions (
     position VARCHAR(10) NOT NULL,       -- 'for' or 'against'
     result VARCHAR(10) DEFAULT NULL,     -- 'win', 'lose', 'draw', NULL means in progress
     messages_count INT DEFAULT 0,
+    conversation_json LONGTEXT DEFAULT NULL, -- The full chat history in JSON
     ai_judgment TEXT DEFAULT NULL,       -- The Gemini evaluation summary
     started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ended_at TIMESTAMP NULL DEFAULT NULL,

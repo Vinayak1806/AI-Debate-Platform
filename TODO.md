@@ -1,19 +1,20 @@
-# AI Debate Platform - Topic Expansion ✅ COMPLETE
+# AI Debate Platform - Roadmap
 
-## Summary of Changes
-- **topics-data.js**: Expanded to 12 categories, 50+ topics each (600+ total). New: artificial_intelligence, law_justice, future_innovation, culture_society, media_internet.
-- **topics.js**: Random shuffle on load, 10 initial topics/category, "Load More" reveals 10 more, count (shown/total), grid layout w/ debate links.
-- **style.css**: .subtopics-grid responsive cards glassmorphism purple-pink gradient topbar, hover lift, .load-more-btn green gradient fullwidth hover lift, mobile 1col.
-- Server auto-reload, live /topics: expand category → random topics + Load More button → full list on click.
+## ✅ Completed
+- [x] **Database Integration**: Full MySQL migration for users, sessions, and history.
+- [x] **AI Judging**: Objective Gemini-powered judging system with fair criteria.
+- [x] **History Persistence**: Full chat history saved as JSON and reloadable in the UI.
+- [x] **Progression System**: Automated skill mastery and achievement unlocking.
+- [x] **Responsive UI**: Premium glassmorphism layout for Home, Profile, and Topics.
+- [x] **Topic Expansion**: 600+ diverse topics integrated.
 
-## Test Results
-- Refresh /topics: different random topics.
-- Load More: incremental batches till complete.
-- Search works w/ new structure.
-- Responsive grid/hover effects smooth.
+## 🚀 Future Roadmap (TODO)
+- [ ] **Multi-player Debates**: Allow real-time human vs human debates.
+- [ ] **Leaderboard**: Global ranking of the best debaters.
+- [ ] **Voice Support**: Speak your arguments and have the AI respond with speech.
+- [ ] **User Customization**: Ability to change avatar icons and profile themes.
+- [ ] **Social Sharing**: Share your "Winning Verdict" directly to social media.
+- [ ] **Dialogue Practice Mode**: A focused mode for logical reasoning training.
 
-**Platform now dynamic fresh topics every visit!** 🎉
-
-All requirements met.
-
-
+## 🐞 Known Minor Issues
+- None at this time.

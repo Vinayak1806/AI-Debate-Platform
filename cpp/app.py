@@ -312,21 +312,39 @@ def profile_data():
 @app.route('/profile/update', methods=['POST'])
 @login_required
 def update_profile():
-    """Updates simple profile attributes like display name."""
+    """Updates profile attributes: display name and login username."""
     user_id = session.get('user_id')
-    display_name = request.form.get('display_name', '').strip()
-    if not display_name or not user_id:
+    new_display_name = request.form.get('display_name', '').strip()
+    new_username = request.form.get('username', '').strip()
+    
+    if not (new_display_name or new_username) or not user_id:
         return jsonify({'error': 'Missing data'}), 400
     
     conn = get_db_connection()
     if not conn:
         return jsonify({'error': 'DB error'}), 500
     
-    cursor = conn.cursor()
-    cursor.execute("UPDATE users SET display_name = %s WHERE id = %s", (display_name, user_id))
+    cursor = conn.cursor(dictionary=True)
+    
+    # If username is changing, check for uniqueness
+    if new_username and new_username != session.get('username'):
+        cursor.execute("SELECT id FROM users WHERE username = %s AND id != %s", (new_username, user_id))
+        if cursor.fetchone():
+            cursor.close(); conn.close()
+            return jsonify({'error': 'Username already taken'}), 400
+            
+    # Update DB
+    cursor.execute(
+        "UPDATE users SET display_name = %s, username = %s WHERE id = %s", 
+        (new_display_name, new_username, user_id)
+    )
     conn.commit()
+    
+    # Sync session
+    session['username'] = new_username
+    
     cursor.close(); conn.close()
-    return jsonify({'ok': True, 'display_name': display_name})
+    return jsonify({'ok': True, 'display_name': new_display_name, 'username': new_username})
 
 
 @app.route('/profile/change_password', methods=['POST'])
@@ -345,12 +363,15 @@ def change_password():
         return jsonify({'error': 'DB error'}), 500
     
     cursor = conn.cursor(dictionary=True)
+    # Verify old password
     cursor.execute("SELECT password FROM users WHERE id = %s", (user_id,))
     row = cursor.fetchone()
+    
     if not row or row['password'] != old:
         cursor.close(); conn.close()
-        return jsonify({'error': 'Old password incorrect'}), 403
+        return jsonify({'error': 'Current password incorrect'}), 403
     
+    # Update to new password
     cursor.execute("UPDATE users SET password = %s WHERE id = %s", (new, user_id))
     conn.commit()
     cursor.close(); conn.close()
