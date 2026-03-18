@@ -6,34 +6,53 @@
     <title>Features - AI Debate and Dialogue</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .main-content {
-            overflow-y: auto;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
         }
 
-        .container {
-            text-align: left;
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            padding: 24px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .container h1 {
-            text-align: center;
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-purple);
         }
 
-        .feature-item {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-left: 4px solid #4CAF50;
-            border-radius: 4px;
+        .feature-card h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+            font-size: 1.25rem;
         }
 
-        .feature-item h3 {
-            color: #4CAF50;
-            margin-top: 0;
+        .feature-card p {
+            margin: 0;
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
-
-        .feature-item p {
-            color: #666;
-            margin: 10px 0;
+        
+        .feature-icon {
+            font-size: 1.8rem;
+            background: var(--gradient-premium);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
     </style>
 </head>
@@ -52,47 +71,52 @@
     </nav>
 
     <div class="main-content">
-        <div class="container">
-            <h1>Features of AI Debate and Dialogue</h1>
+        <div class="container animate-hero">
+            <h1 style="margin-bottom: 10px;">Features & Capabilities</h1>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 30px;">
+                Everything you need to master the art of debate and logical reasoning.
+            </p>
 
-            <div class="feature-item">
-                <h3>🔐 Secure User Authentication</h3>
-                <p>Create your account with a secure login and signup system. Your credentials are protected and kept confidential.</p>
-            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><span class="feature-icon">🔐</span> Secure Authentication</h3>
+                    <p>Create your account with a secure login and signup system. Your credentials are protected and kept confidential.</p>
+                </div>
 
-            <div class="feature-item">
-                <h3>💬 AI-Powered Debates</h3>
-                <p>Engage in intelligent debates with our AI system. Discuss various topics and get thoughtful responses from advanced AI algorithms.</p>
-            </div>
+                <div class="feature-card">
+                    <h3><span class="feature-icon">💬</span> AI-Powered Debates</h3>
+                    <p>Engage in intelligent debates with our AI system. Discuss various topics and get thoughtful responses from advanced algorithms.</p>
+                </div>
 
-            <div class="feature-item">
-                <h3>🗣️ Natural Dialogue</h3>
-                <p>Experience natural conversations with AI that understands context and provides relevant, meaningful responses.</p>
-            </div>
+                <div class="feature-card">
+                    <h3><span class="feature-icon">🗣️</span> Natural Dialogue</h3>
+                    <p>Experience natural conversations with AI that understands context and provides relevant, deeply logical responses.</p>
+                </div>
 
-            <div class="feature-item">
-                <h3>📚 Topic Variety</h3>
-                <p>Debate on a wide range of topics including science, philosophy, current events, technology, and more.</p>
-            </div>
+                <div class="feature-card">
+                    <h3><span class="feature-icon">📚</span> Topic Variety</h3>
+                    <p>Debate on a wide range of topics including science, philosophy, current events, technology, and more.</p>
+                </div>
 
-            <div class="feature-item">
-                <h3>⚡ Real-time Interaction</h3>
-                <p>Get instant responses and engage in fast-paced debates with real-time feedback from the AI system.</p>
-            </div>
+                <div class="feature-card">
+                    <h3><span class="feature-icon">⚡</span> Real-time Interaction</h3>
+                    <p>Get instant responses and engage in fast-paced debates with real-time feedback from the AI reasoning engine.</p>
+                </div>
 
-            <div class="feature-item">
-                <h3>📊 Debate History</h3>
-                <p>Keep track of your previous debates and review past conversations to improve your argumentation skills.</p>
-            </div>
+                <div class="feature-card">
+                    <h3><span class="feature-icon">📊</span> Debate History</h3>
+                    <p>Keep track of your previous debates and review past conversations to improve your argumentation skills over time.</p>
+                </div>
 
-            <div class="feature-item">
-                <h3>🎯 Smart Arguments</h3>
-                <p>Receive intelligent counterarguments and learn new perspectives on various topics through structured debate.</p>
-            </div>
+                <div class="feature-card">
+                    <h3><span class="feature-icon">🎯</span> Smart Arguments</h3>
+                    <p>Receive intelligent counterarguments and learn new perspectives on various complex topics through structured debate formats.</p>
+                </div>
 
-            <div class="feature-item">
-                <h3>🌐 User-Friendly Interface</h3>
-                <p>Enjoy a clean, intuitive design that makes engaging in debates easy and enjoyable for all users.</p>
+                <div class="feature-card">
+                    <h3><span class="feature-icon">🌐</span> Premium UI</h3>
+                    <p>Enjoy a clean, glassmorphic design that makes engaging in debates visually stunning and highly legible for long reading sessions.</p>
+                </div>
             </div>
         </div>
     </div>

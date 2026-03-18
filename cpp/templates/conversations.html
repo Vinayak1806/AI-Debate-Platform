@@ -31,7 +31,7 @@
                 JINJA LOOP
                 Checks if the 'conversations' list passed from app.py has data.
                 If it does, it loops through each item to generate a card.
-                If empty, the {% else %} block is shown instead.
+                If empty, the fallback block is shown instead.
             -->
             {% if conversations %}
             <div class="conversations-list">
@@ -41,15 +41,18 @@
                         <h3>{{ conv.topic }}</h3>
                         <span class="conversation-date">{{ conv.date }}</span>
                     </div>
-                    <div class="conversation-participants">
-                        <strong>Participants:</strong> {{ conv.participants|join(', ') }}
+                    <div class="conversation-info">
+                        <span class="result-badge {{ conv.result if conv.result else 'pending' }}">
+                            Result: {{ conv.result.title() if conv.result else 'In Progress' }}
+                        </span>
+                        <span class="message-count">💬 {{ conv.messages_count }} messages</span>
                     </div>
                     <div class="conversation-summary">
-                        <strong>Summary:</strong>
-                        <p>{{ conv.summary }}</p>
+                        <strong>Judge's Verdict:</strong>
+                        <p>{{ conv.summary if conv.summary else 'No judgment recorded yet.' }}</p>
                     </div>
                     <div class="conversation-actions">
-                        <a href="{{ url_for('debate', topic=conv.topic|replace(' ', '_')) }}" class="view-btn">View Full
+                        <a href="{{ url_for('debate', topic=conv.topic|replace(' ', '_'), view_past='true') }}" class="view-btn">View Full
                             Debate</a>
                     </div>
                 </div>
@@ -113,23 +116,36 @@
             font-size: 14px;
         }
 
-        .conversation-participants {
-            margin-bottom: 10px;
-            color: #555;
+        .conversation-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .result-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .result-badge.win { background: var(--accent-green, #4CAF50); }
+        .result-badge.loss { background: #f44336; }
+        .result-badge.draw { background: #ff9800; }
+        .result-badge.pending { background: #9e9e9e; }
+
+        .message-count {
+            color: #666;
+            font-size: 0.9rem;
         }
 
         .conversation-summary {
             margin-bottom: 15px;
-        }
-
-        .conversation-summary strong {
-            color: #333;
-        }
-
-        .conversation-summary p {
-            margin: 5px 0 0 0;
-            color: #666;
-            line-height: 1.5;
+            background: rgba(0,0,0,0.02);
+            padding: 12px;
+            border-radius: 8px;
         }
 
         .conversation-actions {

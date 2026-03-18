@@ -21,108 +21,158 @@
     </nav>
 
     <div class="main-content">
-        <div class="container">
-            <h1>Why Choose AI Debate & Dialogue?</h1>
+        <div class="container animate-hero">
+            <h1 style="margin-bottom: 15px;">Why Choose Our Platform?</h1>
+            <p style="text-align: center; color: var(--text-secondary);">Redefining how we engage with ideas.</p>
 
-            <div class="why-section">
-                <div class="why-item">
+            <div class="why-grid">
+                <div class="why-card">
                     <h3>🤖 Advanced AI Technology</h3>
-                    <p>Our platform uses cutting-edge AI algorithms that provide intelligent, context-aware responses. Unlike simple chatbots, our AI understands debate structure, logical arguments, and can adapt its responses based on your debating style.</p>
+                    <p>Our platform uses cutting-edge algorithms that provide intelligent, context-aware responses. Unlike simple chatbots, our AI understands complex debate structure, logical fallacies, and adapts to your style.</p>
                 </div>
 
-                <div class="why-item">
+                <div class="why-card">
                     <h3>🎓 Skill Development</h3>
-                    <p>Improve your critical thinking, argumentation, and communication skills through structured debates. Our AI provides constructive feedback and helps you identify strengths and areas for improvement in your debating technique.</p>
+                    <p>Measurably improve your critical thinking, argumentation, and concise communication skills. Our system provides constructive feedback, helping you identify empirical strengths and logical gaps.</p>
                 </div>
 
-                <div class="why-item">
+                <div class="why-card">
                     <h3>🌍 Diverse Perspectives</h3>
-                    <p>Experience debates from multiple viewpoints. Our AI can simulate different ideological positions, cultural perspectives, and expert opinions, giving you a comprehensive understanding of complex topics.</p>
+                    <p>Experience debates from multiple viewpoints. Our AI simulates differing ideological positions, cultural frameworks, and expert paradigms, giving you a 360-degree understanding of any topic.</p>
                 </div>
 
-                <div class="why-item">
+                <div class="why-card">
                     <h3>⚡ Real-time Learning</h3>
-                    <p>Get immediate responses and feedback. No waiting for human opponents - engage in debates whenever you want, at your own pace, and receive instant analysis of your arguments.</p>
+                    <p>Get immediate responses and actionable feedback. No waiting for human opponents - engage in deep debates whenever inspiration strikes and receive instant analysis.</p>
                 </div>
 
-                <div class="why-item">
+                <div class="why-card">
                     <h3>📊 Progress Tracking</h3>
-                    <p>Monitor your improvement over time with detailed statistics and analytics. Track your win rates, argument quality scores, and topic mastery to see tangible progress in your debating skills.</p>
+                    <p>Monitor your improvement intuitively with precise analytics. Track your win rates, logical soundness scores, and topic mastery to visualize tangible progress over time.</p>
                 </div>
 
-                <div class="why-item">
+                <div class="why-card">
                     <h3>🔒 Safe Environment</h3>
-                    <p>Debate controversial topics without fear of personal attacks or emotional confrontations. Our AI maintains a respectful, constructive dialogue focused on ideas rather than individuals.</p>
+                    <p>Debate highly controversial topics without fear of ad hominem attacks or emotional fallout. Our AI maintains a relentlessly constructive dialogue focused solely on ideas.</p>
                 </div>
             </div>
 
             <div class="cta-section">
-                <h2>Ready to Start Your Debate Journey?</h2>
-                <p>Join thousands of users who are improving their thinking through AI-powered debates.</p>
+                <h2>Ready to Start Your Journey?</h2>
+                <p>Join an active community of thinkers improving their mental models through AI-powered sparring.</p>
                 <a href="{{ url_for('topics') }}" class="cta-btn">Explore Topics</a>
             </div>
         </div>
     </div>
 
     <style>
-        .why-section {
+        .why-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin: 40px 0;
         }
 
-        .why-item {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
-            transition: transform 0.3s ease;
+        .why-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
 
-        .why-item:hover {
+        .why-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-premium);
+            transition: width 0.3s ease;
+        }
+
+        .why-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-lg);
         }
 
-        .why-item h3 {
-            color: #4CAF50;
-            margin-top: 0;
+        .why-card:hover::before {
+            width: 8px;
         }
 
-        .why-item p {
-            color: #666;
-            line-height: 1.6;
+        .why-card h3 {
+            color: var(--text-primary);
+            margin: 0 0 15px 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .why-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin: 0;
         }
 
         .cta-section {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
+            background: var(--gradient-soft);
             color: white;
-            padding: 30px;
-            border-radius: 8px;
+            padding: 50px 30px;
+            border-radius: 24px;
             text-align: center;
-            margin-top: 40px;
+            margin-top: 50px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
         }
 
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        
         .cta-section h2 {
-            margin-top: 0;
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
         }
 
         .cta-btn {
             display: inline-block;
-            background-color: white;
-            color: #4CAF50;
-            padding: 12px 30px;
+            background: white;
+            color: var(--accent-blue);
+            padding: 14px 35px;
             text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin-top: 15px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
         }
 
         .cta-btn:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.05);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
     </style>
 </body>

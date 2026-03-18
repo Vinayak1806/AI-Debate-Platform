@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- profile.html — dynamic profile page that reflects current user data and supports live updates -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,427 +22,288 @@
     </nav>
 
     <div class="main-content">
-        <div class="container">
-            <h1>User Profile</h1>
-
-            <div class="profile-section">
-                <div class="profile-info">
-                    <h3>Username</h3>
-                    <p class="profile-value">{{ username }}</p>
+        <div class="container" style="background: transparent; box-shadow: none; padding: 0;">
+            <div class="profile-header">
+                <div class="avatar-container">
+                    <div class="avatar-main">{{ username[0] | upper if username else 'U' }}</div>
                 </div>
-
-                <div class="profile-info">
-                    <h3>Debates Participated</h3>
-                    <p class="profile-value">12</p>
-                </div>
-
-                <div class="profile-info">
-                    <h3>Win Rate</h3>
-                    <p class="profile-value">67%</p>
-                </div>
-
-                <div class="profile-info">
-                    <h3>Member Since</h3>
-                    <p class="profile-value">Mar 10, 2026</p>
+                <div class="profile-header-info">
+                    <h1>{{ username }}</h1>
+                    <span class="member-badge">Elite Debater</span>
+                    <p id="joinedAt" style="margin-top: 10px; color: var(--text-secondary); font-size: 0.9rem;">Member since {{ joined }}</p>
                 </div>
             </div>
 
-            <div class="progress-section">
-                <h2>Your Progress</h2>
-
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Debate Skills</span>
-                        <span>75%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 75%"></div>
-                    </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">🏆</span>
+                    <span id="debatesCount" class="stat-value">{{ debates }}</span>
+                    <span class="stat-label">Debates</span>
                 </div>
-
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Argument Quality</span>
-                        <span>82%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 82%"></div>
-                    </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📈</span>
+                    <span id="winRate" class="stat-value">{{ win_rate }}</span>
+                    <span class="stat-label">Win Rate</span>
                 </div>
-
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Critical Thinking</span>
-                        <span>68%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 68%"></div>
-                    </div>
-                </div>
-
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Topic Knowledge</span>
-                        <span>71%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 71%"></div>
-                    </div>
+                <div class="stat-card">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-value">{{ achievements | length }}</span>
+                    <span class="stat-label">Achievements</span>
                 </div>
             </div>
 
-            <div class="achievements-section">
-                <h2>Achievements</h2>
-                <div class="achievements-grid">
-                    <div class="achievement unlocked">
-                        <div class="achievement-icon">🎯</div>
-                        <div class="achievement-info">
-                            <h4>First Debate</h4>
-                            <p>Completed your first debate</p>
+            <div class="section-card">
+                <div class="section-title">
+                    <span>📊</span>
+                    <h2>Skill Mastery</h2>
+                </div>
+                <div class="progress-container">
+                    {% for label, pct in progress.items() %}
+                    <div class="progress-item" data-label="{{ label }}" style="margin-bottom: 1.5rem;">
+                        <div class="progress-label" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span class="progress-name" style="font-weight: 600; color: var(--text-primary);">{{ label }}</span>
+                            <span class="progress-value" style="color: var(--accent-purple); font-weight: 700;">{{ pct }}%</span>
+                        </div>
+                        <div class="progress-bar" style="height: 10px; background: #edf2f7; border-radius: 5px; overflow: hidden;">
+                            <div class="progress-fill" style="width: {{ pct }}%; height: 100%; background: var(--gradient-premium); border-radius: 5px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);" data-fill></div>
                         </div>
                     </div>
-
-                    <div class="achievement unlocked">
-                        <div class="achievement-icon">🔥</div>
-                        <div class="achievement-info">
-                            <h4>Debate Streak</h4>
-                            <p>5 debates in a row</p>
-                        </div>
-                    </div>
-
-                    <div class="achievement unlocked">
-                        <div class="achievement-icon">🏆</div>
-                        <div class="achievement-info">
-                            <h4>Winner</h4>
-                        </div>
-                    </div>
-
-                    <div class="achievement locked">
-                        <div class="achievement-icon">⭐</div>
-                        <div class="achievement-info">
-                            <h4>Master Debater</h4>
-                            <p>Win 10 debates</p>
-                        </div>
-                    </div>
-
-                    <div class="achievement locked">
-                        <div class="achievement-icon">🧠</div>
-                        <div class="achievement-info">
-                            <h4>Critical Thinker</h4>
-                            <p>Score 90% in argument quality</p>
-                        </div>
-                    </div>
-
-                    <div class="achievement locked">
-                        <div class="achievement-icon">🌟</div>
-                        <div class="achievement-info">
-                            <h4>Topic Expert</h4>
-                            <p>Master 5 different topics</p>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
 
-            <div class="recent-debates">
-                <h2>Recent Debates</h2>
-                <div class="debates-list">
-                    <div class="debate-item">
-                        <div class="debate-topic">AI Ethics</div>
-                        <div class="debate-result win">Won</div>
-                        <div class="debate-date">2 days ago</div>
-                    </div>
-
-                    <div class="debate-item">
-                        <div class="debate-topic">Climate Change</div>
-                        <div class="debate-result loss">Lost</div>
-                        <div class="debate-date">5 days ago</div>
-                    </div>
-
-                    <div class="debate-item">
-                        <div class="debate-topic">Education Reform</div>
-                        <div class="debate-result win">Won</div>
-                        <div class="debate-date">1 week ago</div>
-                    </div>
+            <div class="section-card">
+                <div class="section-title">
+                    <span>🏅</span>
+                    <h2>Recent Achievements</h2>
                 </div>
-                <a href="{{ url_for('conversations') }}" class="view-all-btn">View All Conversations</a>
+                <div class="achievements-premium-grid">
+                    {% for a in achievements %}
+                    <div class="ach-card {% if a.unlocked %}unlocked{% else %}locked{% endif %}" data-title="{{ a.title }}" title="{{ a.desc }}">
+                        <div class="ach-card-icon">{{ a.icon }}</div>
+                        <div class="ach-card-title">{{ a.title }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
 
-            <div class="settings">
-                <h2>Settings</h2>
-                <button class="edit-btn">Edit Profile</button>
-                <button class="change-pwd-btn">Change Password</button>
-                <button class="delete-btn">Delete Account</button>
+            <div class="section-card">
+                <div class="section-title">
+                    <span>🛠️</span>
+                    <h2>Account Settings</h2>
+                </div>
+                <div class="settings-bar">
+                    <button class="premium-btn btn-edit">
+                        <span>✏️</span> Edit Profile
+                    </button>
+                    <button class="premium-btn btn-pwd">
+                        <span>🔒</span> Change Password
+                    </button>
+                    <button class="premium-btn btn-del">
+                        <span>🗑️</span> Delete Account
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <style>
-        .profile-section {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin: 20px 0;
+    <!-- Modals and scripts -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3>Edit Profile</h3>
+            <label>Display name</label>
+            <input id="displayNameInput" type="text" name="display_name" placeholder="Enter new display name" />
+            <div class="modal-actions">
+                <button id="saveProfileBtn" class="edit-btn">Save Changes</button>
+                <button id="cancelEditBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pwdModal" class="modal">
+        <div class="modal-content">
+            <h3>Change Password</h3>
+            <label>Old password</label>
+            <input id="oldPwd" type="password" placeholder="Enter current password" />
+            <label>New password</label>
+            <input id="newPwd" type="password" placeholder="Enter new password" />
+            <div class="modal-actions">
+                <button id="savePwdBtn" class="change-pwd-btn">Update Password</button>
+                <button id="cancelPwdBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3>Delete Account</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5;">Are you absolutely sure you want to delete your account? This action cannot be undone and you will lose all progress.</p>
+            <div class="modal-actions">
+                <button id="confirmDeleteBtn" class="delete-btn">Yes, Delete Account</button>
+                <button id="cancelDeleteBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="toast">
+        <span id="toastIcon"></span>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        function showModal(id, show){ 
+            const modal = document.getElementById(id);
+            if(show) {
+                modal.classList.add('show');
+            } else {
+                modal.classList.remove('show');
+            }
         }
 
-        .profile-info {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 4px;
-            border-top: 3px solid #4CAF50;
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+
+            toast.className = 'toast show ' + type;
+            toastIcon.innerHTML = type === 'success' ? '✅' : '❌';
+            toastMessage.textContent = message;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        .profile-info h3 {
-            margin: 0 0 10px 0;
-            color: #333;
-        }
+        document.addEventListener('DOMContentLoaded', function(){
+            const editBtn = document.querySelector('.btn-edit');
+            const changeBtn = document.querySelector('.btn-pwd');
+            const deleteBtn = document.querySelector('.btn-del');
 
-        .profile-value {
-            margin: 0;
-            color: #4CAF50;
-            font-size: 18px;
-            font-weight: bold;
-        }
+            const displayValueEl = document.querySelector('.profile-header-info h1');
+            const displayInput = document.getElementById('displayNameInput');
 
-        .profile-stats {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
+            // Close modals if clicking outside content
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        showModal(modal.id, false);
+                    }
+                });
+            });
 
-        .profile-stats h2 {
-            margin-top: 0;
-            color: #333;
-        }
+            editBtn.addEventListener('click', ()=>{
+                displayInput.value = displayValueEl ? displayValueEl.textContent.trim() : '';
+                showModal('editModal', true);
+            });
+            document.getElementById('cancelEditBtn').addEventListener('click', ()=> showModal('editModal', false));
 
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
+            document.getElementById('saveProfileBtn').addEventListener('click', async ()=>{
+                const form = new FormData();
+                form.append('display_name', displayInput.value || '');
+                try {
+                    const res = await fetch('/profile/update', { method: 'POST', body: form });
+                    const json = await res.json();
+                    if (json.ok) {
+                        if (displayValueEl) displayValueEl.textContent = json.display_name;
+                        showModal('editModal', false);
+                        showToast('Profile updated successfully!');
+                    } else { showToast(json.error || 'Update failed', 'error'); }
+                } catch(e) {
+                    showToast('Network error occurred.', 'error');
+                }
+            });
 
-        .stat-item label {
-            color: #666;
-            font-weight: bold;
-        }
+            changeBtn.addEventListener('click', ()=> showModal('pwdModal', true));
+            document.getElementById('cancelPwdBtn').addEventListener('click', ()=> showModal('pwdModal', false));
+            document.getElementById('savePwdBtn').addEventListener('click', async ()=>{
+                const oldPwd = document.getElementById('oldPwd').value;
+                const newPwd = document.getElementById('newPwd').value;
+                
+                if (!oldPwd || !newPwd) {
+                    showToast('Please fill in both fields', 'error');
+                    return;
+                }
 
-        .stat-item span {
-            color: #4CAF50;
-            font-weight: bold;
-        }
+                const form = new FormData();
+                form.append('old_password', oldPwd);
+                form.append('new_password', newPwd);
+                try {
+                    const res = await fetch('/profile/change_password', { method: 'POST', body: form });
+                    const json = await res.json();
+                    if (json.ok) {
+                        showModal('pwdModal', false);
+                        showToast('Password changed successfully!');
+                        document.getElementById('oldPwd').value = '';
+                        document.getElementById('newPwd').value = '';
+                    } else { showToast(json.error || 'Password change failed', 'error'); }
+                } catch(e) {
+                    showToast('Network error occurred.', 'error');
+                }
+            });
 
-        .settings {
-            text-align: center;
-            margin-top: 20px;
-        }
+            deleteBtn.addEventListener('click', ()=> showModal('deleteModal', true));
+            document.getElementById('cancelDeleteBtn').addEventListener('click', ()=> showModal('deleteModal', false));
+            document.getElementById('confirmDeleteBtn').addEventListener('click', async ()=>{
+                try {
+                    const res = await fetch('/profile/delete', { method: 'POST' });
+                    const json = await res.json();
+                    if (json.ok) { 
+                        showModal('deleteModal', false);
+                        showToast('Account deleted. Redirecting...');
+                        setTimeout(() => {
+                            window.location.href = '/signup'; 
+                        }, 1500);
+                    } else { showToast(json.error || 'Delete failed', 'error'); }
+                } catch(e) {
+                    showToast('Network error occurred.', 'error');
+                }
+            });
 
-        .settings h2 {
-            color: #333;
-        }
+            // Refresh profile data periodically and on load
+            async function refreshProfileData(){
+                try{
+                    const res = await fetch('/profile/data');
+                    if (!res.ok) return;
+                    const json = await res.json();
+                    
+                    if (json.display_name) document.querySelector('.profile-header-info h1').textContent = json.display_name;
+                    document.getElementById('debatesCount').textContent = json.debates || 0;
+                    document.getElementById('winRate').textContent = json.win_rate || '0%';
+                    document.getElementById('joinedAt').textContent = 'Member since ' + (json.joined || '');
 
-        .settings button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
+                    const progress = json.progress || {};
+                    Object.keys(progress).forEach(label => {
+                        const item = document.querySelector(`.progress-item[data-label="${label}"]`);
+                        if (item){
+                            const pct = progress[label];
+                            const valueEl = item.querySelector('.progress-value');
+                            const fill = item.querySelector('[data-fill]');
+                            if (valueEl) valueEl.textContent = pct + '%';
+                            if (fill) fill.style.width = pct + '%';
+                        }
+                    });
 
-        .edit-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
+                    const achs = json.achievements || [];
+                    achs.forEach(a => {
+                        const el = document.querySelector(`.ach-card[data-title="${a.title}"]`);
+                        if (el){
+                            if (a.unlocked) {
+                                el.classList.add('unlocked');
+                                el.classList.remove('locked');
+                            } else {
+                                el.classList.add('locked');
+                                el.classList.remove('unlocked');
+                            }
+                        }
+                    });
 
-        .edit-btn:hover {
-            background-color: #45a049;
-        }
-
-        .change-pwd-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .change-pwd-btn:hover {
-            background-color: #0b7dda;
-        }
-
-        .delete-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background-color: #da190b;
-        }
-
-        .progress-section {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .progress-section h2 {
-            margin-top: 0;
-            color: #333;
-        }
-
-        .progress-item {
-            margin-bottom: 15px;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #45a049);
-            border-radius: 5px;
-            transition: width 0.3s ease;
-        }
-
-        .achievements-section {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .achievements-section h2 {
-            margin-top: 0;
-            color: #333;
-        }
-
-        .achievements-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .achievement {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: white;
-            border-radius: 8px;
-            border: 2px solid #e0e0e0;
-            transition: all 0.3s ease;
-        }
-
-        .achievement.unlocked {
-            border-color: #4CAF50;
-            background-color: #f0f9f0;
-        }
-
-        .achievement.locked {
-            opacity: 0.6;
-        }
-
-        .achievement-icon {
-            font-size: 30px;
-            margin-right: 15px;
-        }
-
-        .achievement-info h4 {
-            margin: 0 0 5px 0;
-            color: #333;
-        }
-
-        .achievement-info p {
-            margin: 0;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .recent-debates {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .recent-debates h2 {
-            margin-top: 0;
-            color: #333;
-        }
-
-        .debates-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .debate-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background-color: white;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
-        }
-
-        .debate-topic {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .debate-result {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .debate-result.win {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .debate-result.loss {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .debate-date {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .view-all-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            background-color: #2196F3;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            text-align: center;
-        }
-
-        .view-all-btn:hover {
-            background-color: #0b7dda;
-        }
-    </style>
+                }catch(e){ console.log('refreshProfileData error', e); }
+            }
+            // Add a small delay for load to ensure layout parses
+            setTimeout(refreshProfileData, 100);
+            setInterval(refreshProfileData, 5000);
+        });
+    </script>
 </body>
 </html>
