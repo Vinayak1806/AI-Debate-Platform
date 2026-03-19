@@ -43,6 +43,12 @@ python cpp/app.py
 ```
 Open `http://127.0.0.1:5000` in your browser.
 
+## 🌐 Deployment (Vercel)
+1. **Cloud Database**: Set up a free MySQL instance on [TiDB Cloud](https://pingcap.com/products/tidb-cloud) or [Aiven](https://aiven.io/).
+2. **Environment Variables**: Add `FLASK_SECRET_KEY`, `GEMINI_API_KEY`, and the `DB_*` variables in the Vercel dashboard. 
+3. **SSL**: For cloud databases, set `DB_SSL_DISABLED=False`.
+4. **Connect**: Link your GitHub repo to Vercel and it will auto-deploy using `vercel.json`.
+
 ## 🧰 Tech Stack
 - **Backend**: Python, Flask, MySQL
 - **AI**: Google Generative AI (Gemini)

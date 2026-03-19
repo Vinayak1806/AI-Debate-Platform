@@ -2,24 +2,24 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 
-# Load .env from the root directory (parent of cpp/)
-_dir = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(os.path.join(_dir, '..', '.env'))
+load_dotenv()
 
 def get_db_connection():
-    """
-    Creates and returns a connection to the MySQL database.
-    Requires environment variables or defaults to basic local settings.
-    """
-    try:
-        connection = mysql.connector.connect(
-            host=os.environ.get('DB_HOST', 'localhost'),
-            user=os.environ.get('DB_USER', 'root'),
-            password=os.environ.get('DB_PASSWORD', ''),
-            database=os.environ.get('DB_NAME', 'debate_platform'),
-            port=int(os.environ.get('DB_PORT', '3306'))
-        )
-        return connection
-    except mysql.connector.Error as err:
-        print(f"[DB ERROR {err.errno}]: {err.msg}")
-        return None
+    return mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
+        port=int(os.getenv("DB_PORT")),
+        ssl_ca=os.path.join(os.path.dirname(__file__), '..', os.getenv("DB_SSL_CA").strip('"')), 
+        ssl_verify_cert=True
+    )
+
+def query_db(query, params=None):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(query, params or ())
+    result = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return result
