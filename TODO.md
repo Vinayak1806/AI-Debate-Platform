@@ -7,6 +7,8 @@
 - [x] **Progression System**: Automated skill mastery and achievement unlocking.
 - [x] **Responsive UI**: Premium glassmorphism layout for Home, Profile, and Topics.
 - [x] **Topic Expansion**: 600+ diverse topics integrated.
+- [x] **Vercel Readiness**: Configuration for serverless Python deployment.
+- [x] **Cloud Database**: Migration to TiDB Cloud with SSL support and verified connection.
 
 ## 🚀 Future Roadmap (TODO)
 - [ ] **Multi-player Debates**: Allow real-time human vs human debates.
