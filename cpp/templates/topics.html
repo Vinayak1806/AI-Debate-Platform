@@ -55,14 +55,20 @@
 
     <style>
         .topics-page-container {
-            max-width: 1200px;
+            max-width: 1366px;
             margin: 0 auto;
             padding: 60px 24px 80px;
         }
 
+        @media (max-width: 768px) {
+            .topics-page-container {
+                padding: 30px 15px 40px;
+            }
+        }
+
         .topics-title {
             text-align: center;
-            font-size: clamp(2.5rem, 6vw, 3.8rem);
+            font-size: clamp(2rem, 8vw, 3.8rem);
             font-weight: 800;
             background: var(--gradient-premium);
             -webkit-background-clip: text;
@@ -175,7 +181,8 @@
             overflow-x: auto;
             gap: 16px;
             margin-bottom: 28px;
-            padding-bottom: 12px;
+            padding: 0 24px 12px; /* Taken in from the edges */
+            scroll-padding: 0 24px;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
         }

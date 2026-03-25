@@ -56,14 +56,17 @@
 
                 <div class="hero-stats">
                     <div class="stat-item">
+                        <span class="stat-icon-large">👥</span>
                         <div class="stat-number">{{ stats.total_users }}</div>
                         <div class="stat-label">Active Users</div>
                     </div>
                     <div class="stat-item">
+                        <span class="stat-icon-large">⚔️</span>
                         <div class="stat-number">{{ stats.total_debates }}+</div>
                         <div class="stat-label">Debates Completed</div>
                     </div>
                     <div class="stat-item">
+                        <span class="stat-icon-large">📖</span>
                         <div class="stat-number">{{ stats.available_topics }}+</div>
                         <div class="stat-label">Topics Available</div>
                     </div>
@@ -133,6 +136,12 @@
             margin-bottom: 40px;
             position: relative;
             overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            .welcome-hero {
+                padding: 40px 15px;
+            }
         }
 
         /* Multi-layer colorful bubbles */
