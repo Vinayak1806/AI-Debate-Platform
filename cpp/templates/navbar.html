@@ -1,8 +1,12 @@
-<nav class="navbar">
-    <div class="nav-brand">
+<nav class="navbar" id="main-navbar">
+    <a class="nav-brand" href="{{ url_for('home') }}">
         <img src="{{ url_for('static', filename='logo.png') }}" alt="ArguAi Logo" class="nav-logo">
-    </div>
-    <ul class="nav-links">
+    </a>
+
+    <ul class="nav-links" id="nav-links">
+        <li class="nav-mobile-only nav-close-container">
+            <button id="nav-close-btn" class="nav-close-btn" aria-label="Close menu">✕ Close Menu</button>
+        </li>
         <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active" {% endif %}>Home</a></li>
         <li><a href="{{ url_for('why_platform') }}" {% if request.endpoint=='why_platform' %}class="active" {% endif
                 %}>Why This Platform</a></li>
@@ -16,6 +20,40 @@
                 %}>History</a></li>
         <li><a href="{{ url_for('profile') }}" {% if request.endpoint=='profile' %}class="active" {% endif
                 %}>Profile</a></li>
+        <li class="nav-mobile-only">
+            <a href="{{ url_for('logout') }}" class="logout-btn-mobile">Logout</a>
+        </li>
     </ul>
-    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+
+    <div class="nav-right">
+        <a href="{{ url_for('logout') }}" class="desktop-logout-btn">Logout</a>
+        <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <div class="nav-overlay" id="nav-overlay"></div>
 </nav>
+
+<script>
+    (function () {
+        var btn = document.getElementById('hamburger-btn');
+        var closeBtn = document.getElementById('nav-close-btn');
+        var nav = document.getElementById('main-navbar');
+        var overlay = document.getElementById('nav-overlay');
+        function close() {
+            nav.classList.remove('nav-open');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+        function toggle() {
+            var o = nav.classList.toggle('nav-open');
+            if (btn) btn.setAttribute('aria-expanded', String(o));
+            document.body.style.overflow = o ? 'hidden' : '';
+        }
+        if (btn) btn.addEventListener('click', toggle);
+        if (closeBtn) closeBtn.addEventListener('click', close);
+        if (overlay) overlay.addEventListener('click', close);
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+</script>

@@ -260,7 +260,7 @@ body {
   width: 80%;
 }
 
-.navbar .logout-btn {
+.navbar .desktop-logout-btn {
   padding: 0.5rem 1.25rem;
   background: white;
   color: #e74c3c;
@@ -269,11 +269,10 @@ body {
   cursor: pointer;
   text-decoration: none;
   font-weight: 600;
-  margin-left: 13rem;
   transition: all 0.3s ease;
 }
 
-.logout-btn:hover {
+.desktop-logout-btn:hover {
   background-color: #e74c3c;
   color: white;
   box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
@@ -2242,4 +2241,127 @@ body::before {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+}
+
+/* --- MOBILE RESPONSIVE OVERRIDES --- */
+.nav-mobile-only {
+  display: none;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 1001;
+  width: 36px;
+  height: 36px;
+}
+
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-primary);
+  margin-bottom: 4px;
+  transition: 0.3s;
+  border-radius: 2px;
+}
+
+.hamburger span:last-child {
+  margin-bottom: 0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 0;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
+}
+
+@media (max-width: 900px) {
+  .nav-logo {
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .navbar .nav-links {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 260px;
+    height: 100vh;
+    background: white;
+    flex-direction: column;
+    padding: 30px 20px;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease-in-out;
+    z-index: 2000;
+    margin: 0;
+    overflow-y: auto;
+  }
+
+  .navbar.nav-open .nav-links {
+    right: 0;
+  }
+
+  .navbar.nav-open .nav-overlay {
+    display: block;
+  }
+
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1500;
+  }
+
+  .nav-mobile-only {
+    display: block;
+  }
+
+  .desktop-logout-btn {
+    display: none;
+  }
+
+  .logout-btn-mobile {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    background: #ef4444;
+    color: white;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-decoration: none;
+    font-weight: bold;
+  }
 }
