@@ -619,7 +619,7 @@ body.auth-body {
   padding: 16px 20px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  width: 85%;
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -637,7 +637,7 @@ body.auth-body {
   padding: 16px;
   font-size: 1.1rem;
   font-weight: 600;
-  width: 85%;
+  width: 100%;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(165, 94, 234, 0.3);
   transition: all 0.3s ease;
@@ -2480,7 +2480,8 @@ body::before {
     flex: 0 0 44px !important;
     border-radius: 20px !important;
     margin-right: 0 !important;
-    font-size: 0 !important; /* Hide text, show icon if I add it, or just keep it small */
+    font-size: 0 !important;
+    /* Hide text, show icon if I add it, or just keep it small */
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -2488,7 +2489,8 @@ body::before {
 
   /* Add search icon to button on mobile since we hid text */
   .search-btn::before {
-    content: '\e8b6'; /* Material Icon 'search' code */
+    content: '\e8b6';
+    /* Material Icon 'search' code */
     font-family: 'Material Icons';
     font-size: 20px;
     color: white;
